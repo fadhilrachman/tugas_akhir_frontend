@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getDataTags } from "./redux/tagSlice";
 import { getDataProduks } from "./redux/produkSlice";
-import rupiahFormat from "rupiah-format";
+import { getDataCategory } from "./redux/categorySlice";
 import { FormatRupiah } from "@arismun/format-rupiah";
 const ListProduk = () => {
   const dispatch = useDispatch();
@@ -11,21 +11,12 @@ const ListProduk = () => {
   const dataProduk = Produk?.data.result;
   const dataTags = Tags?.data.result;
   const [tag, setTag] = React.useState([]);
-  const tags = [
-    "Freash Meat",
-    "Vegetables",
-    "Fruit & Nut Gifts",
-    "Fresh Berries",
-    "Ocean Foods",
-    "FastFood",
-  ];
 
   useEffect(() => {
     dispatch(getDataTags());
     dispatch(getDataProduks());
   }, [dispatch]);
 
-  console.log(dataProduk);
   const handleTag = (val) => {
     if (tag.includes(val)) {
       const filter = tag.filter((item) => item != val);
@@ -38,14 +29,6 @@ const ListProduk = () => {
   return (
     <div>
       <div className="h-36 bg-no-repeat bg-cover bg-[url('https://c4.wallpaperflare.com/wallpaper/1016/29/154/fresh-fruit-hd-wallpaper-preview.jpg')]">
-        {" "}
-        {/* <img
-          // src="https://img-cdn.medkomtek.com/e9rOlqEYKr_bbhp9Nk4nJDC4lFs=/0x0/smart/filters:quality(75):strip_icc():format(webp)/article/IDAAIeoGFsdRns-wCBA4Y/original/014055800_1604479989-Mau-Diet-Hindari-Makan-Buah-Buah-Tinggi-Kalori-Ini-shutterstock_770613370.jpg"
-          alt=""
-          src="https://c4.wallpaperflare.com/wallpaper/1016/29/154/fresh-fruit-hd-wallpaper-preview.jpg"
-          // src="https://img.freepik.com/free-photo/colorful-collage-fruits-texture-close-up_23-2149870264.jpg?size=626&ext=jpg&ga=GA1.2.1056913818.1672935173&semt=sph"
-          className="h-36 "
-        /> */}
         <div className=" h-full bg-black w-full bg-opacity-50  top-24 text-white font-bold flex flex-col justify-center items-center">
           <span className="text-3xl">Organi Shop</span>
           <span>Home-Shop</span>

@@ -10,9 +10,9 @@ import store from "./store";
 function App() {
   return (
     <div className="">
-      <Navbar />
       <BrowserRouter>
         <Provider store={store}>
+          <Navbar />
           <Routes>
             <Route path="/" element={<ListProduk />} />
           </Routes>
