@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getDataTags } from "./redux/tagSlice";
 import { getDataProduks } from "./redux/produkSlice";
@@ -10,7 +10,10 @@ const ListProduk = () => {
   const Produk = useSelector((state) => state.Produk);
   const dataProduk = Produk?.data.result;
   const dataTags = Tags?.data.result;
-  const [tag, setTag] = React.useState([]);
+  const [param, setParam] = useState({
+    category: "",
+    tag: [],
+  });
 
   useEffect(() => {
     dispatch(getDataTags());
@@ -18,14 +21,12 @@ const ListProduk = () => {
   }, [dispatch]);
 
   const handleTag = (val) => {
-    if (tag.includes(val)) {
-      const filter = tag.filter((item) => item != val);
-      return setTag(filter);
-      // return console.log("cuy");
+    if (param.tag.includes(val)) {
+      const filter = param.tag.filter((item) => item != val);
+      return setParam({ ...param, tag: [filter] });
     }
-    setTag([...tag, val]);
+    return setParam({ ...param, tag: [...param.tag, val] });
   };
-  // console.log(tag);
   return (
     <div>
       <div className="h-36 bg-no-repeat bg-cover bg-[url('https://c4.wallpaperflare.com/wallpaper/1016/29/154/fresh-fruit-hd-wallpaper-preview.jpg')]">
@@ -40,7 +41,7 @@ const ListProduk = () => {
           {dataTags?.map((val) => (
             <p
               className={`my-5 hover:cursor-pointer hover:text-emerald-600 ${
-                tag.includes(val.name) ? "text-emerald-600" : ""
+                param.tag.includes(val.name) ? "text-emerald-600" : ""
               }`}
               onClick={() => handleTag(val.name)}
             >

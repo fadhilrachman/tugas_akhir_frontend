@@ -12,7 +12,9 @@ const Produks = createSlice({
     data: [],
     isLoading: false,
     isError: null,
+    category: "",
   },
+
   extraReducers: {
     [getDataProduks.pending]: (state) => {
       state.isLoading = true;
@@ -27,5 +29,4 @@ const Produks = createSlice({
     },
   },
 });
-
 export default Produks.reducer;

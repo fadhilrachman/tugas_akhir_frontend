@@ -12,6 +12,12 @@ const Category = createSlice({
     data: [],
     isLoading: false,
     isError: null,
+    category: "",
+  },
+  reducers: {
+    setCategory: (state, action) => {
+      state.category = action.payload;
+    },
   },
   extraReducers: {
     [getDataCategory.pending]: (state) => {
@@ -27,5 +33,6 @@ const Category = createSlice({
     },
   },
 });
+export const { setCategory } = Category.actions;
 
 export default Category.reducer;
