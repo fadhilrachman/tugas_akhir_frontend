@@ -4,7 +4,10 @@ import { getDataTags } from "./redux/tagSlice";
 import { getDataProduks } from "./redux/produkSlice";
 import { getDataCategory } from "./redux/categorySlice";
 import { FormatRupiah } from "@arismun/format-rupiah";
+import { useLocation } from "react-router-dom";
 const ListProduk = () => {
+  const location = useLocation();
+  console.log(location);
   const dispatch = useDispatch();
   const Tags = useSelector((state) => state.Tag);
   const Produk = useSelector((state) => state.Produk);
