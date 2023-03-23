@@ -19,9 +19,9 @@ const authSlice = createSlice({
       state.isSucces = false;
       state.isError = false;
     },
-    [register.fulfilled]: (state) => {
+    [register.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.isSucces = true;
+      state.isSucces = action.payload.data;
       state.isError = false;
     },
     [register.rejected]: (state) => {
