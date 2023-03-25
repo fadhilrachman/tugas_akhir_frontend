@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import tagSlice from "./pages/home/redux/tagSlice";
-import produkSlice from "./pages/home/redux/produkSlice";
-import categorySlice from "./pages/home/redux/categorySlice";
-import authSlice from "./pages/auth/redux/authSlice";
+import tagSlice from "./redux/tagSlice";
+import produkSlice from "./redux/produkSlice";
+import categorySlice from "./redux/categorySlice";
+import authSlice from "./redux/authSlice";
 const store = configureStore({
   reducer: {
     Tag: tagSlice,

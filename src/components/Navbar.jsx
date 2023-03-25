@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getDataCategory,
-  setCategory,
-} from "../pages/home/redux/categorySlice";
+import { getDataCategory, setCategory } from "../redux/categorySlice";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const Category = useSelector((state) => state.Category);
   const dataCategory = Category?.data.result;
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     dispatch(getDataCategory());
   }, [dispatch]);
@@ -39,7 +38,7 @@ const Navbar = () => {
                 name=""
                 id=""
                 onChange={(e) => handleCategory(e.target.value)}
-                className="border-y bg-white border-l px-5  pr-3 py-3 font-bold text-sm flex justify-around items-center w-full focus:outline-none  hover:cursor-pointer hover:bg-neutral-100"
+                className="border-y w-56 bg-white border-l px-5  pr-3 py-3 font-bold text-sm flex justify-around items-center  focus:outline-none  hover:cursor-pointer hover:bg-neutral-100"
               >
                 <option value="">All Category</option>
                 {dataCategory?.map((val) => (
@@ -57,9 +56,40 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-        <div>
+        <div className="flex items-center justify-between">
           {" "}
-          <i class="bi bi-person-fill mr-2"></i>login
+          <div className="relative  w-16 py-3 ">
+            <div className="w-1 absolute h-1 right-8 top-1 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold p-2">
+              <small>1</small>
+            </div>
+            <i class="bi bi-cart  text-2xl font-bold "></i>
+          </div>
+          {/* <i class="bi bi-person-fill mr-2"></i>login */}
+          <div className="flex justify-center items-center">
+            {token ? (
+              <>
+                <div className="bg-emerald-500 w-7 h-7 rounded-full"></div>
+                <span className="ml-2">Fadhil</span>
+              </>
+            ) : (
+              <>
+                <button
+                  className="bg-white  border border-emerald-600 text-emerald-600 rounded py-2 px-4"
+                  onClick={() => navigate("/register")}
+                >
+                  Daftar
+                </button>{" "}
+                <button
+                  className="bg-emerald-600 text-white rounded ml-3 py-2 px-4"
+                  onClick={() => navigate("/login")}
+                >
+                  Masuk
+                </button>
+              </>
+            )}
+
+            {/*  */}
+          </div>
         </div>
       </div>
     </div>

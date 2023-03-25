@@ -4,7 +4,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Provider } from "react-redux";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, P } from "react-router-dom";
 import ListProduk from "./pages/home/ListProduk";
 import store from "./store";
 import Login from "./pages/auth/Login";
@@ -12,16 +12,15 @@ import Register from "./pages/auth/Register";
 
 function App() {
   const [showNav, setShowNav] = useState(false);
-
+  const token = localStorage.getItem("token");
   return (
     <div className="">
       <BrowserRouter>
         <Provider store={store}>
-          {showNav && <Navbar />}
           <Routes>
             {/* {pathname} */}
             <Route path="/" element={<ListProduk />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login setShowNav={setShowNav} />} />
             <Route path="/register" element={<Register />} />
           </Routes>
         </Provider>

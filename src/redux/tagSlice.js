@@ -2,7 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getDataTags = createAsyncThunk("/tag", async () => {
-  const result = await axios.get(`${process.env.REACT_APP_API}/tags`);
+  const result = await axios.get(`${process.env.REACT_APP_API}/tags`, {
+    headers: {
+      Authorization: ` ${localStorage.getItem("token")}`,
+    },
+  });
   return result;
 });
 

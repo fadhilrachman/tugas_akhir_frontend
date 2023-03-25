@@ -5,7 +5,7 @@ import BaseInput from "../../components/BaseInput";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "./redux/authSlice";
+import { register } from "../../redux/authSlice";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const Register = () => {
             class="text-sm"
             onChange={formik.handleChange}
             value={formik.values.username}
-            isInvalid={formik.errors.username}
+            isInvalid={formik.errors.username && formik.touched.username}
             errMessage={formik.errors.username}
           />
           <BaseInput
@@ -59,7 +59,7 @@ const Register = () => {
             name="email"
             onChange={formik.handleChange}
             value={formik.values.email}
-            isInvalid={formik.errors.email}
+            isInvalid={formik.errors.email && formik.touched.email}
             errMessage={formik.errors.email}
           />
           <BaseInput
@@ -69,7 +69,7 @@ const Register = () => {
             name="password"
             onChange={formik.handleChange}
             value={formik.values.password}
-            isInvalid={formik.errors.password}
+            isInvalid={formik.errors.password && formik.touched.password}
             errMessage={formik.errors.password}
           />
           <BaseInput
@@ -79,7 +79,9 @@ const Register = () => {
             name="confirm_password"
             onChange={formik.handleChange}
             value={formik.values.confirm_password}
-            isInvalid={formik.errors.confirm_password}
+            isInvalid={
+              formik.errors.confirm_password && formik.touched.confirm_password
+            }
             errMessage={formik.errors.confirm_password}
           />
           <BaseButton class="mt-5" type="submit">

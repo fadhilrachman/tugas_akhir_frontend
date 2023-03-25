@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getDataTags } from "./redux/tagSlice";
-import { getDataProduks } from "./redux/produkSlice";
-import { getDataCategory } from "./redux/categorySlice";
+import { getDataTags } from "../../redux/tagSlice";
+import { getDataProduks } from "../../redux/produkSlice";
+import { getDataCategory } from "../../redux/categorySlice";
 import { FormatRupiah } from "@arismun/format-rupiah";
 import { useLocation } from "react-router-dom";
+import Navbar from "../../components/Navbar";
 const ListProduk = () => {
   const location = useLocation();
   console.log(location);
@@ -32,6 +33,8 @@ const ListProduk = () => {
   };
   return (
     <div>
+      <Navbar />
+
       <div className="h-36 bg-no-repeat bg-cover bg-[url('https://c4.wallpaperflare.com/wallpaper/1016/29/154/fresh-fruit-hd-wallpaper-preview.jpg')]">
         <div className=" h-full bg-black w-full bg-opacity-50  top-24 text-white font-bold flex flex-col justify-center items-center">
           <span className="text-3xl">Organi Shop</span>
