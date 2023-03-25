@@ -11,10 +11,24 @@ export const login = createAsyncThunk("/auth-login", async (val) => {
 });
 export const getUser = createAsyncThunk("/auth-login", async (param) => {
   const result = await axios.get(
-    `${process.env.REACT_APP_API}/user?isLogin=${param.isLogin}`
+    `${process.env.REACT_APP_API}/user?isLogin=${param.isLogin}`,
+    {
+      headers: {
+        Authorization: ` ${localStorage.getItem("token")}`,
+      },
+    }
   );
   return result;
 });
+export const logout = createAsyncThunk("/logout", async (req, res) => {
+  const result = await axios.post(`${process.env.REACT_APP_API}/logout`, {
+    headers: {
+      Authorization: ` ${localStorage.getItem("token")}`,
+    },
+  });
+  return result;
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -50,6 +64,21 @@ const authSlice = createSlice({
       state.isError = false;
     },
     [login.rejected]: (state) => {
+      state.isLoading = false;
+      state.isSucces = false;
+      state.isError = true;
+    },
+    [logout.pending]: (state) => {
+      state.isLoading = true;
+      state.isSucces = false;
+      state.isError = false;
+    },
+    [logout.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isSucces = action.payload.data;
+      state.isError = false;
+    },
+    [logout.rejected]: (state) => {
       state.isLoading = false;
       state.isSucces = false;
       state.isError = true;

@@ -4,6 +4,7 @@ import { getDataTags } from "../../redux/tagSlice";
 import { getDataProduks } from "../../redux/produkSlice";
 import { getDataCategory } from "../../redux/categorySlice";
 import { FormatRupiah } from "@arismun/format-rupiah";
+import { getUser } from "../../redux/authSlice";
 import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 const ListProduk = () => {
@@ -11,6 +12,7 @@ const ListProduk = () => {
   console.log(location);
   const dispatch = useDispatch();
   const Tags = useSelector((state) => state.Tag);
+  const user = useSelector((state) => state.Auth);
   const Produk = useSelector((state) => state.Produk);
   const dataProduk = Produk?.data.result;
   const dataTags = Tags?.data.result;
@@ -21,6 +23,7 @@ const ListProduk = () => {
 
   useEffect(() => {
     dispatch(getDataTags());
+    dispatch(getUser({ isLogin: true }));
     dispatch(getDataProduks());
   }, [dispatch]);
 
@@ -31,6 +34,7 @@ const ListProduk = () => {
     }
     return setParam({ ...param, tag: [...param.tag, val] });
   };
+  console.log(user);
   return (
     <div>
       <Navbar />

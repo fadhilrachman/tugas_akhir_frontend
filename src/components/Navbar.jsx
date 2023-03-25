@@ -2,13 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getDataCategory, setCategory } from "../redux/categorySlice";
 import { useNavigate } from "react-router-dom";
+import { getUser, logout } from "../redux/authSlice";
+
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.Auth);
   const Category = useSelector((state) => state.Category);
   const dataCategory = Category?.data.result;
   const token = localStorage.getItem("token");
+  const username = user.data?.result?.username;
+  const role = user.data?.result?.role;
   useEffect(() => {
+    dispatch(getUser({ isLogin: true }));
     dispatch(getDataCategory());
   }, [dispatch]);
 
@@ -16,7 +22,13 @@ const Navbar = () => {
     console.log("ini val : ", val);
     dispatch(setCategory(val));
   };
-  console.log(Category);
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+  console.log(user);
 
   const kategori = ["kat1", "kat2", "kat3", "kat4", "kat5"];
   return (
@@ -65,12 +77,32 @@ const Navbar = () => {
             <i class="bi bi-cart  text-2xl font-bold "></i>
           </div>
           {/* <i class="bi bi-person-fill mr-2"></i>login */}
-          <div className="flex justify-center items-center">
-            {token ? (
-              <>
+          <div className="">
+            {token && username ? (
+              <div className="hover:cursor-pointer flex justify-center items-center group relative  py-3">
                 <div className="bg-emerald-500 w-7 h-7 rounded-full"></div>
-                <span className="ml-2">Fadhil</span>
-              </>
+                <span className="ml-2">{username}</span>
+                <div className="absolute hidden group-hover:flex hover:flex top-12 bg-white  flex-col rounded ">
+                  <div className=" w-32 flex border-t justify-between border-x py-2 px-4 rounded-t hover:bg-slate-100">
+                    <i class="bi bi-person-fill mr-2"></i>
+                    <small>Profile</small>
+                  </div>
+                  {role == "admin" && (
+                    <div className=" w-32 flex border-t justify-between border-x py-2 px-4  hover:bg-slate-100">
+                      <i class="bi bi-speedometer2"></i>
+                      <small>Dashboard</small>
+                    </div>
+                  )}
+
+                  <div
+                    className=" w-32 flex border-t justify-between border-x py-2 px-4 rounded-b hover:bg-slate-100"
+                    onClick={handleLogout}
+                  >
+                    <i class="bi bi-box-arrow-left"></i>
+                    <small>Logout</small>
+                  </div>
+                </div>
+              </div>
             ) : (
               <>
                 <button
