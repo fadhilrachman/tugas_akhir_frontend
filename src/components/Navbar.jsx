@@ -19,7 +19,6 @@ const Navbar = () => {
   }, [dispatch]);
 
   const handleCategory = (val) => {
-    console.log("ini val : ", val);
     dispatch(setCategory(val));
   };
 
@@ -28,7 +27,6 @@ const Navbar = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
-  console.log(user);
 
   const kategori = ["kat1", "kat2", "kat3", "kat4", "kat5"];
   return (

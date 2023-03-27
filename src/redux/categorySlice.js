@@ -14,8 +14,7 @@ const Category = createSlice({
   name: "category",
   initialState: {
     data: [],
-    isLoading: false,
-    isError: null,
+    status: "",
     category: "",
   },
   reducers: {
@@ -25,15 +24,14 @@ const Category = createSlice({
   },
   extraReducers: {
     [getDataCategory.pending]: (state) => {
-      state.isLoading = true;
+      state.status = "loading";
     },
     [getDataCategory.fulfilled]: (state, result) => {
-      state.isLoading = false;
+      state.status = "success";
       state.data = result?.payload?.data;
     },
     [getDataCategory.pending]: (state) => {
-      state.isLoading = false;
-      state.isError = true;
+      state.status = "error";
     },
   },
 });

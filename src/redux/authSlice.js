@@ -9,7 +9,7 @@ export const login = createAsyncThunk("/auth-login", async (val) => {
   const result = await axios.post(`${process.env.REACT_APP_API}/login`, val);
   return result;
 });
-export const getUser = createAsyncThunk("/auth-login", async (param) => {
+export const getUser = createAsyncThunk("/get-user", async (param) => {
   const result = await axios.get(
     `${process.env.REACT_APP_API}/user?isLogin=${param.isLogin}`,
     {

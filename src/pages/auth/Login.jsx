@@ -22,7 +22,6 @@ const Login = ({ setShowNav }) => {
     }),
     onSubmit: async (val) => {
       await dispatch(login(val));
-      console.log(auth.isSucces.token);
       setShowNav(true);
     },
   });
@@ -32,8 +31,6 @@ const Login = ({ setShowNav }) => {
       navigate("/");
     }
   }, [auth.isSucces]);
-  console.log(auth);
-  console.log();
   return (
     <div className="font-index flex justify-center items-center h-screen flex-col">
       <span className="text-3xl text-green-600 font-bold">Login</span>
