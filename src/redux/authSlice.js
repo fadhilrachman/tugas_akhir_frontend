@@ -20,10 +20,11 @@ export const getUser = createAsyncThunk("/get-user", async (param) => {
   );
   return result;
 });
-export const logout = createAsyncThunk("/logout", async (req, res) => {
+export const logout = createAsyncThunk("/logout", async () => {
   const result = await axios.post(`${process.env.REACT_APP_API}/logout`, {
     headers: {
-      Authorization: ` ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+      Authorization: `${localStorage.getItem("token")}`,
     },
   });
   return result;

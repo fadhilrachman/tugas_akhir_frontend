@@ -31,17 +31,17 @@ const ListProduk = () => {
   useEffect(() => {
     dispatch(getDataProduks(param));
   }, [param]);
-
+  console.log(param);
   const handleTag = (val) => {
     if (param.tag.includes(val)) {
       const filter = param.tag.filter((item) => item != val);
-      return setParam({ ...param, tag: [filter] });
+      console.log("ini filter ", filter);
+      return setParam({ ...param, tag: filter });
     }
     return setParam({ ...param, tag: [...param.tag, val] });
   };
-  console.log(Produk);
   return (
-    <div>
+    <div className="text-gray-500 font-medium">
       <Navbar />
 
       <div className="h-36 bg-no-repeat bg-cover bg-[url('https://c4.wallpaperflare.com/wallpaper/1016/29/154/fresh-fruit-hd-wallpaper-preview.jpg')]">
@@ -50,15 +50,15 @@ const ListProduk = () => {
           <span>Home-Shop</span>
         </div>
       </div>
-      <div className=" mt-14 px-20 grid grid-cols-4 gap-4 font-light">
+      <div className=" mt-14 px-20 grid grid-cols-4 gap-4 ">
         <div>
-          <h1 className="text-3xl font-bold">Tags</h1>
+          <h1 className="text-3xl font-bold text-emerald-600">Tags</h1>
           {dataTags?.map((val) => (
             <p
               className={`my-5 hover:cursor-pointer hover:text-emerald-600 ${
-                param.tag.includes(val.name) ? "text-emerald-600" : ""
+                param.tag.includes(val._id) ? "text-emerald-600" : ""
               }`}
-              onClick={() => handleTag(val.name)}
+              onClick={() => handleTag(val._id)}
             >
               {val.name}
             </p>
@@ -66,7 +66,7 @@ const ListProduk = () => {
         </div>
 
         <div className="col-span-3 ">
-          <h1 className="text-4xl pb-3 font-bold border-b-4 w-min border-emerald-600 b">
+          <h1 className="text-4xl pb-3 font-bold border-b-4 w-min border-emerald-600 text-emerald-600">
             Produk
           </h1>
 

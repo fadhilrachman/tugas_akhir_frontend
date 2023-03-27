@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getDataCategory, setCategory } from "../redux/categorySlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getUser, logout } from "../redux/authSlice";
 
 const Navbar = () => {
@@ -28,9 +28,8 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const kategori = ["kat1", "kat2", "kat3", "kat4", "kat5"];
   return (
-    <div className="text-sm font-medium font-index">
+    <div className="text-sm font-medium font-index text-black">
       <div className=" p-6 px-24 flex justify-between items-center">
         <div>
           <h1 className="text-3xl">
@@ -81,10 +80,12 @@ const Navbar = () => {
                 <div className="bg-emerald-500 w-7 h-7 rounded-full"></div>
                 <span className="ml-2">{username}</span>
                 <div className="absolute hidden group-hover:flex hover:flex top-12 bg-white  flex-col rounded ">
-                  <div className=" w-32 flex border-t justify-between border-x py-2 px-4 rounded-t hover:bg-slate-100">
-                    <i class="bi bi-person-fill mr-2"></i>
-                    <small>Profile</small>
-                  </div>
+                  <Link to="/profile">
+                    <div className=" w-32 flex border-t justify-between border-x py-2 px-4 rounded-t hover:bg-slate-100">
+                      <i class="bi bi-person-fill mr-2"></i>
+                      <small>Profile</small>
+                    </div>
+                  </Link>
                   {role == "admin" && (
                     <div className=" w-32 flex border-t justify-between border-x py-2 px-4  hover:bg-slate-100">
                       <i class="bi bi-speedometer2"></i>

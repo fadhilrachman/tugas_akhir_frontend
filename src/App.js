@@ -9,6 +9,7 @@ import ListProduk from "./pages/home/ListProduk";
 import store from "./store";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Profile from "./pages/profile";
 
 function App() {
   const [showNav, setShowNav] = useState(false);
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             {/* {pathname} */}
             <Route path="/" element={<ListProduk />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login setShowNav={setShowNav} />} />
             <Route path="/register" element={<Register />} />
           </Routes>

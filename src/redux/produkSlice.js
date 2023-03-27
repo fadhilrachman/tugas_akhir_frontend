@@ -1,13 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getDataProduks = createAsyncThunk("/produk", async (param) => {
-  const result = await axios.get(
-    `${process.env.REACT_APP_API}/products?category=${param.category}`,
-    {}
-  );
-  return result;
-});
+export const getDataProduks = createAsyncThunk(
+  "/produk",
+  async ({ tag, category }) => {
+    const tagFiter = tag.map((val) => `tag=${val}&`);
+    console.log(tagFiter.join(""));
+    const result = await axios.get(
+      `${
+        process.env.REACT_APP_API
+      }/products?category=${category}&${tagFiter.join("")}`,
+      {}
+    );
+    return result;
+  }
+);
 
 const Produks = createSlice({
   name: "produk",
