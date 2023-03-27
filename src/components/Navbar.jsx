@@ -33,11 +33,13 @@ const Navbar = () => {
       <div className=" p-6 px-24 flex justify-between items-center">
         <div>
           <h1 className="text-3xl">
-            <img
-              src="https://themewagon.github.io/ogani/img/logo.png"
-              alt=""
-              srcset=""
-            />
+            <Link to="/">
+              <img
+                src="https://themewagon.github.io/ogani/img/logo.png"
+                alt=""
+                srcset=""
+              />
+            </Link>
           </h1>
         </div>
         <div>

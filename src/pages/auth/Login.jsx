@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import BaseButton from "../../components/BaseButton";
-import BaseInput from "../../components/BaseInput";
+import BaseInput from "../../components/input/BaseInput";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";

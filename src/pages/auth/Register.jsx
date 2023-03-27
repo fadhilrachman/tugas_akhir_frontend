@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BaseButton from "../../components/BaseButton";
-import BaseInput from "../../components/BaseInput";
+import BaseInput from "../../components/input/BaseInput";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
