@@ -13,10 +13,22 @@ import {
   getDataKecamatan,
   getDataKelurahan,
 } from "../../redux/regionSlice";
+import { createAlamat } from "../../redux/alamatSlice";
+import { getUser } from "../../redux/authSlice";
 const ModalDelete = ({ show, onHide, destroy }) => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.Auth);
+  const idUser = user.data?.result._id;
   const region = useSelector((state) => state.Region);
   const dataProvinsi = region.dataProvinsi?.provinsi;
+  const dataKabupten = region.dataKabupaten?.kota_kabupaten;
+  const dataKecamatan = region.dataKecamatan?.kecamatan;
+  const dataKelurahan = region.dataKelurahan?.kelurahan;
+  const [param, setParam] = useState({
+    id_provinsi: "",
+    id_kabupaten: "",
+    id_kecamatan: "",
+  });
   const formik = useFormik({
     initialValues: {
       nama: "",
@@ -24,8 +36,13 @@ const ModalDelete = ({ show, onHide, destroy }) => {
       kabupaten: "",
       kecamatan: "",
       kelurahan: "",
-      detai_alamat: "",
+      detail_alamat: "",
       user: "",
+    },
+    onSubmit: (values) => {
+      // alert(JSON.stringify(values, null, 2));
+      dispatch(createAlamat(values));
+      onHide();
     },
     validationSchema: Yup.object({
       nama: Yup.string().required("nama tidak boleh kosong"),
@@ -33,15 +50,69 @@ const ModalDelete = ({ show, onHide, destroy }) => {
       kabupaten: Yup.string().required("kabupaten tidak boleh kosong"),
       kecamatan: Yup.string().required("kecamatan tidak boleh kosong"),
       kelurahan: Yup.string().required("kelurahan tidak boleh kosong"),
-      detai_alamat: Yup.string().required("detail tidak boleh kosong"),
+      detail_alamat: Yup.string().required("detail tidak boleh kosong"),
       user: Yup.string().required("user tidak boleh kosong"),
     }),
   });
 
   useEffect(() => {
     dispatch(getDataPovinsi());
+    dispatch(getUser({ islogin: true }));
+    formik.setFieldValue("user", idUser);
   }, [dispatch]);
-  console.log(dataProvinsi);
+
+  useEffect(() => {
+    dispatch(getDataKabupaten(param.id_provinsi));
+    dispatch(getDataKecamatan(param.id_kabupaten));
+    dispatch(getDataKelurahan(param.id_kecamatan));
+  }, [param]);
+
+  const handleProvinsi = (e) => {
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    const nama = selectedOption.text;
+    console.log("ini id : ", nama);
+    formik.setFieldValue("provinsi", nama);
+    setParam({ ...param, id_provinsi: e.target.value });
+    if (e.target.value == "") {
+      formik.setFieldValue("kabupaten", "");
+      formik.setFieldValue("kecamatan", "");
+      formik.setFieldValue("provinsi", "");
+      formik.setFieldValue("kelurahan", "");
+      setParam({
+        id_provinsi: "",
+        id_kabupaten: "",
+        id_kecamatan: "",
+      });
+    }
+  };
+
+  const handleKabupaten = (e) => {
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    const nama = selectedOption.text;
+    formik.setFieldValue("kabupaten", nama);
+    setParam({ ...param, id_kabupaten: e.target.value });
+    if (e.target.value == "") {
+      setParam({ ...param, id_kabupaten: "" });
+      formik.setFieldValue("kabupaten", "");
+      formik.setFieldValue("kecamatan", "");
+      formik.setFieldValue("kelurahan", "");
+
+      setParam({ ...param, id_kecamatan: "" });
+    }
+  };
+
+  const handleKecamatan = (e) => {
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    const nama = selectedOption.text;
+    formik.setFieldValue("kecamatan", nama);
+    setParam({ ...param, id_kecamatan: e.target.value });
+    if (e.target.value == "") {
+      setParam({ ...param, id_kecamatan: "" });
+      formik.setFieldValue("kecamatan", "");
+      formik.setFieldValue("kelurahan", "");
+    }
+  };
+  console.log(param);
   return (
     <ReactModal
       isOpen={show}
@@ -53,14 +124,30 @@ const ModalDelete = ({ show, onHide, destroy }) => {
         <h2 className="text-2xl font-bold mb-4 text-emerald-600">
           Buat Alamat Baru
         </h2>
-        <form action="" className="grid grid-cols-2 gap-x-10">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="grid grid-cols-2 gap-x-10"
+        >
           <div className="flex flex-col mb-3">
             <label htmlFor="">Nama</label>
-            <BaseInput class="w-96" />
+            <BaseInput
+              class="w-96"
+              name="nama"
+              onChange={formik.handleChange}
+              value={formik.values.nama}
+              isInvalid={formik.errors.nama && formik.touched.nama}
+              errMessage={formik.errors.nama}
+            />
           </div>
           <div className="flex flex-col mb-3">
             <label htmlFor="">Provinsi</label>
-            <Select>
+            <Select
+              name="provinsi"
+              onChange={handleProvinsi}
+              value={param.id_provinsi}
+              isInvalid={formik.errors.provinsi && formik.touched.provinsi}
+              errMessage={formik.errors.provinsi}
+            >
               <option value="">Provinsi</option>
               {dataProvinsi?.map((val) => (
                 <option value={val.id}>{val.nama}</option>
@@ -70,9 +157,16 @@ const ModalDelete = ({ show, onHide, destroy }) => {
           <div className="flex flex-col mb-3">
             <label htmlFor="">Kabupaten</label>
 
-            <Select disabled={true}>
+            <Select
+              disabled={!formik.values.provinsi}
+              name="kabupaten"
+              onChange={handleKabupaten}
+              value={param.id_kabupaten}
+              isInvalid={formik.errors.kabupaten && formik.touched.kabupaten}
+              errMessage={formik.errors.kabupaten}
+            >
               <option value="">Kabupaten</option>
-              {dataProvinsi?.map((val) => (
+              {dataKabupten?.map((val) => (
                 <option value={val.id}>{val.nama}</option>
               ))}
             </Select>
@@ -80,32 +174,50 @@ const ModalDelete = ({ show, onHide, destroy }) => {
           <div className="flex flex-col mb-3">
             <label htmlFor="">Kecamatan</label>
 
-            <Select>
+            <Select
+              name="kecamatan"
+              disabled={!formik.values.kabupaten}
+              onChange={handleKecamatan}
+              value={param.id_kecamatan}
+              isInvalid={formik.errors.kecamatan && formik.touched.kecamatan}
+              errMessage={formik.errors.kecamatan}
+            >
               <option value="">Kecamatan</option>
-              {dataProvinsi?.map((val) => (
+              {dataKecamatan?.map((val) => (
                 <option value={val.id}>{val.nama}</option>
               ))}
             </Select>
           </div>
           <div className="flex flex-col mb-3">
             <label htmlFor="">Detail Alamat</label>
-            <TextArea />
+            <TextArea
+              name="detail_alamat"
+              value={formik.values.detail_alamat}
+              onChange={formik.handleChange}
+            />
           </div>
           <div className="flex flex-col mb-3">
             <label htmlFor="">Kelurahan</label>
 
-            <Select>
+            <Select
+              name="kelurahan"
+              disabled={!formik.values.kecamatan}
+              onChange={formik.handleChange}
+              value={formik.values.kelurahan}
+              isInvalid={formik.errors.kelurahan && formik.touched.kelurahan}
+              errMessage={formik.errors.kelurahan}
+            >
               <option value="">Kelurahan</option>
-              {dataProvinsi?.map((val) => (
-                <option value={val.id}>{val.nama}</option>
+              {dataKelurahan?.map((val) => (
+                <option value={val.nama}>{val.nama}</option>
               ))}
             </Select>
           </div>{" "}
-          <div className="flex justify-end copx-3 py-2">
+          <div className="flex justify-end col-start-2 py-2">
             <BaseButton onClick={() => onHide()} class="b">
               Cancel
             </BaseButton>
-            <BaseButton class="ml-3" onClick={destroy}>
+            <BaseButton type="submit" class="ml-3">
               Submit
             </BaseButton>
           </div>

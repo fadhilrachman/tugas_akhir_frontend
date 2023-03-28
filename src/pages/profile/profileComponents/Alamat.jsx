@@ -24,7 +24,7 @@ const Alamat = () => {
       </div>
 
       {dataAlamat?.map((val) => (
-        <div className="border p-3 rounded">
+        <div className="border p-3 rounded mt-6">
           <span className="text-gray-700">Rumah</span>
           <div className="mt-3">
             <p className="text-2xl font-bold text-emerald-600">{val.nama}</p>
