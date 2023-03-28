@@ -13,12 +13,13 @@ import {
   getDataKecamatan,
   getDataKelurahan,
 } from "../../redux/regionSlice";
-import { createAlamat } from "../../redux/alamatSlice";
+import { createAlamat, updateAlamat } from "../../redux/alamatSlice";
 import { getUser } from "../../redux/authSlice";
-const ModalDelete = ({ show, onHide, destroy }) => {
+
+const ModalCreateAlamat = ({ show, onHide, update }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth);
-  const idUser = user.data?.result._id;
+  const idUser = user.data?.result?._id;
   const region = useSelector((state) => state.Region);
   const dataProvinsi = region.dataProvinsi?.provinsi;
   const dataKabupten = region.dataKabupaten?.kota_kabupaten;
@@ -40,8 +41,13 @@ const ModalDelete = ({ show, onHide, destroy }) => {
       user: "",
     },
     onSubmit: (values) => {
-      // alert(JSON.stringify(values, null, 2));
-      dispatch(createAlamat(values));
+      if (update) {
+        console.log("ini val ", values);
+        const data = { ...values, id: update._id };
+        dispatch(updateAlamat(data));
+      } else {
+        dispatch(createAlamat(values));
+      }
       onHide();
     },
     validationSchema: Yup.object({
@@ -60,6 +66,38 @@ const ModalDelete = ({ show, onHide, destroy }) => {
     dispatch(getUser({ islogin: true }));
     formik.setFieldValue("user", idUser);
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   if (update != undefined) {
+  //     formik.setFieldValue("nama", update?.nama);
+  //     formik.setFieldValue("detail_alamat", update?.detail_alamat);
+  //     formik.setFieldValue("provinsi", update?.provinsi);
+  //     formik.setFieldValue("kecamatan", update?.kecamatan);
+  //     formik.setFieldValue("kabupaten", update?.kabupaten);
+  //     formik.setFieldValue("kelurahan", update?.kelurahan);
+  //     console.log("ini kabupaten", update.kabupaten);
+  //     dataProvinsi?.map((val) =>
+  //       val.nama == update?.provinsi
+  //         ? setParam({
+  //             ...param,
+  //             id_provinsi: val?.id,
+  //           })
+  //         : ""
+  //     );
+  //     console.log(
+  //       "coba---",
+  //       dataKabupten?.map((val) =>
+  //         val?.nama
+  //           ? setParam({
+  //               ...param,
+  //               id_kabupaten: val?.id,
+  //             })
+  //           : ""
+  //       )
+  //     );
+  //   }
+  //   console.log(param);
+  // }, [update]);
 
   useEffect(() => {
     dispatch(getDataKabupaten(param.id_provinsi));
@@ -112,7 +150,7 @@ const ModalDelete = ({ show, onHide, destroy }) => {
       formik.setFieldValue("kelurahan", "");
     }
   };
-  console.log(param);
+  console.log(update);
   return (
     <ReactModal
       isOpen={show}
@@ -122,7 +160,7 @@ const ModalDelete = ({ show, onHide, destroy }) => {
     >
       <div className="p-8 bg-white rounded-lg ">
         <h2 className="text-2xl font-bold mb-4 text-emerald-600">
-          Buat Alamat Baru
+          {update ? "update Alamat" : "Buat Alamat Baru"}
         </h2>
         <form
           onSubmit={formik.handleSubmit}
@@ -227,4 +265,4 @@ const ModalDelete = ({ show, onHide, destroy }) => {
   );
 };
 
-export default ModalDelete;
+export default ModalCreateAlamat;
