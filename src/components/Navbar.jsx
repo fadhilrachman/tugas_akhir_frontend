@@ -89,10 +89,12 @@ const Navbar = () => {
                     </div>
                   </Link>
                   {role == "admin" && (
-                    <div className=" w-32 flex border-t justify-between border-x py-2 px-4  hover:bg-slate-100">
-                      <i class="bi bi-speedometer2"></i>
-                      <small>Dashboard</small>
-                    </div>
+                    <Link to="/admin">
+                      <div className=" w-32 flex border-t justify-between border-x py-2 px-4  hover:bg-slate-100">
+                        <i class="bi bi-speedometer2"></i>
+                        <small>Dashboard</small>
+                      </div>
+                    </Link>
                   )}
 
                   <div

@@ -5,9 +5,9 @@ const BaseInput = (props) => {
     <>
       <input
         {...props}
-        className={`focus:outline-none focus:border-emerald-600  text-neutral-500 border rounded-lg px-3 py-2  ${
+        className={`focus:outline-none   text-neutral-500 border rounded-lg px-3 py-2  ${
           props.class
-        } ${props.isInvalid ? "border-red-500 " : ""}`}
+        } ${props.isInvalid ? "border-red-500 " : "focus:border-emerald-600"}`}
       />
       {props.isInvalid && (
         <small className="text-red-500">{props.errMessage}</small>

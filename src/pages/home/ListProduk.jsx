@@ -100,7 +100,7 @@ const ListProduk = () => {
                 </div>
               ))
             ) : (
-              <div className="col-span-3 border w-72 ">
+              <div className="col-start-2  w-72 ">
                 <img
                   // src="https://cdn-icons-png.flaticon.com/512/2877/2877699.png"
                   src="https://cdn-icons-png.flaticon.com/512/4076/4076503.png"

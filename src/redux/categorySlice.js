@@ -10,6 +10,22 @@ export const getDataCategory = createAsyncThunk("/category", async () => {
   return result;
 });
 
+export const createDataCategory = createAsyncThunk(
+  "/create-category",
+  async (param) => {
+    const result = await axios.post(
+      `${process.env.REACT_APP_API}/categories`,
+      param,
+      {
+        headers: {
+          Authorization: ` ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return result;
+  }
+);
+
 const Category = createSlice({
   name: "category",
   initialState: {
@@ -31,6 +47,15 @@ const Category = createSlice({
       state.data = result?.payload?.data;
     },
     [getDataCategory.pending]: (state) => {
+      state.status = "error";
+    },
+    [createDataCategory.pending]: (state) => {
+      state.status = "loading";
+    },
+    [createDataCategory.fulfilled]: (state, result) => {
+      state.status = "success";
+    },
+    [createDataCategory.pending]: (state) => {
       state.status = "error";
     },
   },
