@@ -10,6 +10,7 @@ import store from "./store";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Profile from "./pages/profile";
+import Admin from "./pages/admin";
 
 function App() {
   const [showNav, setShowNav] = useState(false);
@@ -21,9 +22,16 @@ function App() {
           <Routes>
             {/* {pathname} */}
             <Route path="/" element={<ListProduk />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login setShowNav={setShowNav} />} />
             <Route path="/register" element={<Register />} />
+            {token ? (
+              <>
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/admin" element={<Admin />} />
+              </>
+            ) : (
+              ""
+            )}
           </Routes>
         </Provider>
       </BrowserRouter>

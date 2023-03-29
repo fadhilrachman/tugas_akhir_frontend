@@ -1,33 +1,43 @@
 import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
-import Alamat from "./profileComponents/Alamat";
-import Biodata from "./profileComponents/Biodata";
-import Pesanan from "./profileComponents/Pesanan";
+import Alamat from "../profile/profileComponents/Alamat";
+import Biodata from "../profile/profileComponents/Biodata";
+import Pesanan from "../profile/profileComponents/Pesanan";
+import Dashboard from "./dashboard";
+import Kategori from "./kategori/Kategori";
+import Produk from "./produk/Produk";
+import Tag from "./tag/Tag";
 
-const Profile = () => {
-  const [path, setPath] = useState("Biodata Diri");
+const Admin = () => {
+  const [path, setPath] = useState("Dashboard");
   const tab = [
     {
-      name: "Biodata Diri",
+      name: "Dashboard",
     },
     {
-      name: "Alamat",
+      name: "Produk",
     },
     {
-      name: "Pesanan",
+      name: "Kategori",
+    },
+    {
+      name: "Tag",
     },
   ];
 
   let tabs;
   switch (path) {
-    case "Biodata Diri":
-      tabs = <Biodata />;
+    case "Dashboard":
+      tabs = <Dashboard />;
       break;
-    case "Alamat":
-      tabs = <Alamat />;
+    case "Produk":
+      tabs = <Produk />;
       break;
-    case "Pesanan":
-      tabs = <Pesanan />;
+    case "Kategori":
+      tabs = <Kategori />;
+      break;
+    case "Tag":
+      tabs = <Tag />;
       break;
     default:
       tabs = <Biodata />;
@@ -40,16 +50,16 @@ const Profile = () => {
       <div className="grid grid-flow-col grid-cols-4 gap-10 mx-3">
         <div className="border p-4 rounded">cok</div>
         <div className=" col-span-3 ">
-          <div className="my-4 text-emerald-600">
-            <i class="bi bi-person-fill mr-2 "></i>
-            Fadhil
+          <div className="my-4 text-emerald-900">
+            <i class="bi bi-speedometer2 mr-2"></i>
+            Dashboard
           </div>
 
-          <div class="border rounded  border-gray-200  text-gray-900 ">
+          <div class="border rounded  border-gray-200   ">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center border-b-gray-200  ">
               {tab.map((val) => (
                 <li
-                  className={`inline-flex p-4 border-b-2   px-7  hover:cursor-pointer   ${
+                  className={`inline-flex p-4 border-b-2   px-7  hover:cursor-pointer  ${
                     val.name == path
                       ? "text-emerald-600 border-emerald-600 "
                       : ""
@@ -69,4 +79,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Admin;

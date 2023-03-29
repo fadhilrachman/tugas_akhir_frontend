@@ -40,14 +40,16 @@ const ModalCreateAlamat = ({ show, onHide, update }) => {
       detail_alamat: "",
       user: "",
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (update) {
         console.log("ini val ", values);
         const data = { ...values, id: update._id };
-        dispatch(updateAlamat(data));
+        await dispatch(updateAlamat(data));
       } else {
-        dispatch(createAlamat(values));
+        await dispatch(createAlamat(values));
       }
+      setParam({ id_provinsi: "", id_kabupaten: "", id_kecamatan: "" });
+      formik.resetForm();
       onHide();
     },
     validationSchema: Yup.object({
@@ -155,8 +157,8 @@ const ModalCreateAlamat = ({ show, onHide, update }) => {
     <ReactModal
       isOpen={show}
       onRequestClose={() => onHide()}
-      className="absolute top-0 left-0 right-0 bottom-0  flex items-center  bg-fixed justify-center text-gray-500"
-      overlayClassName="absolute top-0 left-0 right-0 bottom-0 bg-black  bg-fixed  bg-opacity-50"
+      className="fixed top-0 left-0 right-0 bottom-0  flex items-center  bg-fixed justify-center text-gray-500"
+      overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black  bg-fixed  bg-opacity-50"
     >
       <div className="p-8 bg-white rounded-lg ">
         <h2 className="text-2xl font-bold mb-4 text-emerald-600">

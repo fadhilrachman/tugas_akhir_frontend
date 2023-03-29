@@ -18,7 +18,7 @@ const Alamat = () => {
   useEffect(() => {
     dispatch(getAlamat({ user: idUser && idUser }));
     dispatch(getUser({ isLogin: true }));
-  }, [dispatch]);
+  }, [dispatch, show]);
 
   return (
     <div>
@@ -83,7 +83,7 @@ const Alamat = () => {
           Tidak ada alamat tersimpan
           <BaseButton
             class="w-max px-3 mb-5 font-medium mt-4"
-            onClick={() => setShow(true)}
+            onClick={() => setShow({ create: true })}
           >
             <i class="bi bi-plus-lg text-white"></i>Tambah Alamat
           </BaseButton>

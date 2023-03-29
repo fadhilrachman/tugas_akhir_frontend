@@ -30,15 +30,15 @@ const Register = () => {
         .required("confirm password tidak boleh kosong"),
     }),
     onSubmit: (val) => {
-      dispatch(register(val));
+      dispatch(register({ ...val, role: "admin" }));
       if (auth.isSucces.message == "register succes") {
         navigate("/login");
       }
     },
   });
-  console.log(auth);
+  console.log(formik.values);
   return (
-    <div className="font-index flex justify-center items-center h-screen flex-col">
+    <div className="font-index flex justify-center items-center h-screen flex-col ">
       <span className="text-3xl text-green-600 font-bold">Register</span>
       <div className="w-2/6 px-4 py-5 rounded">
         <form onSubmit={formik.handleSubmit}>
@@ -46,7 +46,7 @@ const Register = () => {
             type="text"
             placeholder="username..."
             name="username"
-            class="text-sm"
+            class="text-sm w-96 "
             onChange={formik.handleChange}
             value={formik.values.username}
             isInvalid={formik.errors.username && formik.touched.username}

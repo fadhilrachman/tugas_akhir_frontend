@@ -41,7 +41,7 @@ const ListProduk = () => {
     return setParam({ ...param, tag: [...param.tag, val] });
   };
   return (
-    <div className="text-gray-500 font-medium">
+    <div className="font-index text-gray-900">
       <Navbar />
 
       <div className="h-36 bg-no-repeat bg-cover bg-[url('https://c4.wallpaperflare.com/wallpaper/1016/29/154/fresh-fruit-hd-wallpaper-preview.jpg')]">
@@ -92,7 +92,7 @@ const ListProduk = () => {
                   </div>
                   <div className="flex h-22   justify-center py-4 flex-col items-center  absolute w-full  bg-white">
                     <span className="mb-2">{val.name}</span>
-                    <span className="font-bold">
+                    <span className="font-bold text-emerald-600">
                       <FormatRupiah value={val.price} />
                       {/* {rupiahFormat.convert(val.price)} */}
                     </span>
@@ -100,7 +100,7 @@ const ListProduk = () => {
                 </div>
               ))
             ) : (
-              <div className=" col-start-2">
+              <div className="col-span-3 border w-72 ">
                 <img
                   // src="https://cdn-icons-png.flaticon.com/512/2877/2877699.png"
                   src="https://cdn-icons-png.flaticon.com/512/4076/4076503.png"

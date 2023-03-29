@@ -7,7 +7,6 @@ export const getDataPovinsi = createAsyncThunk("/get-provinsi", async () => {
   );
   return result;
 });
-
 export const getDataKabupaten = createAsyncThunk(
   "/get-kabupaten",
   async (param) => {
@@ -17,7 +16,6 @@ export const getDataKabupaten = createAsyncThunk(
     return result;
   }
 );
-
 export const getDataKecamatan = createAsyncThunk(
   "/get-kecamatan",
   async (param) => {
