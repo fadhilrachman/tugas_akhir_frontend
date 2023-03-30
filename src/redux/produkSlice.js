@@ -5,7 +5,6 @@ export const getDataProduks = createAsyncThunk(
   "/produk",
   async ({ tag, category }) => {
     const tagFiter = tag.map((val) => `tag=${val}&`);
-    console.log(tagFiter.join(""));
     const result = await axios.get(
       `${
         process.env.REACT_APP_API

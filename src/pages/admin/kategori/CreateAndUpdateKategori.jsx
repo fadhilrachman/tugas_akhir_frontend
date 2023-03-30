@@ -1,27 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactModal from "react-modal";
 import BaseButton from "../../../components/BaseButton";
 import BaseInput from "../../../components/input/BaseInput";
 import { useFormik } from "formik";
-import { createDataCategory } from "../../../redux/categorySlice";
+import {
+  createDataCategory,
+  updateDataCategory,
+} from "../../../redux/categorySlice";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 
-const CreateKategori = ({ show, onHide }) => {
+const CreateAndUpdateKategori = ({ show, onHide, update }) => {
   const dispatch = useDispatch();
+  console.log("ini data", update);
   const formik = useFormik({
     initialValues: {
       name: "",
     },
     onSubmit: async (val) => {
-      await dispatch(createDataCategory(val));
+      if (update) {
+        await dispatch(updateDataCategory({ id: update._id, name: val.name }));
+      } else {
+        await dispatch(createDataCategory(val));
+      }
+      formik.resetForm();
       onHide();
     },
     validationSchema: Yup.object({
       name: Yup.string().required("nama kategori tidak boleh kosong"),
     }),
   });
-  console.log(formik.errors);
+
+  useEffect(() => {
+    formik.setFieldValue("name", update?.name);
+  }, [update]);
+
   return (
     <ReactModal
       isOpen={show}
@@ -48,7 +61,9 @@ const CreateKategori = ({ show, onHide }) => {
             />
           </div>
           <div className="flex justify-end">
-            <BaseButton onClick={() => onHide()}>Cancel</BaseButton>
+            <BaseButton variant="white" onClick={() => onHide()}>
+              Cancel
+            </BaseButton>
             <BaseButton class="ml-3" type="submit">
               Submit
             </BaseButton>
@@ -59,4 +74,4 @@ const CreateKategori = ({ show, onHide }) => {
   );
 };
 
-export default CreateKategori;
+export default CreateAndUpdateKategori;

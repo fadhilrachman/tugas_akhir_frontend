@@ -10,6 +10,38 @@ export const getDataCategory = createAsyncThunk("/category", async () => {
   return result;
 });
 
+export const updateDataCategory = createAsyncThunk(
+  "/update-category",
+  async (param) => {
+    const { id, name } = param;
+    const result = await axios.put(
+      `${process.env.REACT_APP_API}/categories/${id}`,
+      { name },
+      {
+        headers: {
+          Authorization: ` ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return result;
+  }
+);
+
+export const deleteDataCateogry = createAsyncThunk(
+  "/delete-category",
+  async (id) => {
+    const result = await axios.delete(
+      `${process.env.REACT_APP_API}/categories/${id}`,
+      {
+        headers: {
+          Authorization: ` ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return result;
+  }
+);
+
 export const createDataCategory = createAsyncThunk(
   "/create-category",
   async (param) => {
@@ -56,6 +88,24 @@ const Category = createSlice({
       state.status = "success";
     },
     [createDataCategory.pending]: (state) => {
+      state.status = "error";
+    },
+    [updateDataCategory.pending]: (state) => {
+      state.status = "loading";
+    },
+    [updateDataCategory.fulfilled]: (state, result) => {
+      state.status = "success";
+    },
+    [updateDataCategory.pending]: (state) => {
+      state.status = "error";
+    },
+    [deleteDataCateogry.pending]: (state) => {
+      state.status = "loading";
+    },
+    [deleteDataCateogry.fulfilled]: (state, result) => {
+      state.status = "success";
+    },
+    [deleteDataCateogry.pending]: (state) => {
       state.status = "error";
     },
   },

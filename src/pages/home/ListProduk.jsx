@@ -31,11 +31,10 @@ const ListProduk = () => {
   useEffect(() => {
     dispatch(getDataProduks(param));
   }, [param]);
-  console.log(param);
+
   const handleTag = (val) => {
     if (param.tag.includes(val)) {
       const filter = param.tag.filter((item) => item != val);
-      console.log("ini filter ", filter);
       return setParam({ ...param, tag: filter });
     }
     return setParam({ ...param, tag: [...param.tag, val] });
@@ -43,7 +42,6 @@ const ListProduk = () => {
   return (
     <div className="font-index text-gray-900">
       <Navbar />
-
       <div className="h-36 bg-no-repeat bg-cover bg-[url('https://c4.wallpaperflare.com/wallpaper/1016/29/154/fresh-fruit-hd-wallpaper-preview.jpg')]">
         <div className=" h-full bg-black w-full bg-opacity-50  top-24 text-white font-bold flex flex-col justify-center items-center">
           <span className="text-3xl">Organi Shop</span>
