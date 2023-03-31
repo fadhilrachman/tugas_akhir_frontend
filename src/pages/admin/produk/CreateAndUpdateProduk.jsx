@@ -40,7 +40,8 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
   const tag = [
     "burger",
     "jangfood",
-    "vegertarian",
+    "chickent",
+    "chickent",
     "chickent",
     "chickent",
     "chickent",
@@ -65,6 +66,7 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
           onSubmit={formik.handleSubmit}
           className="grid grid-cols-2 gap-x-5"
         >
+          s
           <div className="flex flex-col my-4 ">
             <label htmlFor="" className="mb-3">
               Nama Produk
@@ -117,7 +119,7 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
                   />
                   <label
                     for="link-checkbox"
-                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    class="ml-2 text-sm   dark:text-gray-300"
                   >
                     {val}
                   </label>
