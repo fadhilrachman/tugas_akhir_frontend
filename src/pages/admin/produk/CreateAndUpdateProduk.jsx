@@ -59,7 +59,7 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
     >
       <div className="p-8 bg-white rounded-lg ">
         <h2 className="text-2xl font-bold mb-4 text-emerald-600">
-          Create Data Kategori
+          Create Data produk
         </h2>
         <form
           action=""
