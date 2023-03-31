@@ -66,10 +66,9 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
           onSubmit={formik.handleSubmit}
           className="grid grid-cols-2 gap-x-5"
         >
-          s
           <div className="flex flex-col my-4 ">
             <label htmlFor="" className="mb-3">
-              Nama Produk
+              Nama Produks
             </label>
             <BaseInput
               name="name"
