@@ -34,7 +34,7 @@ const CreateAndUpdateKategori = ({ show, onHide, update }) => {
   useEffect(() => {
     formik.setFieldValue("name", update?.name);
   }, [update]);
-
+  console.log(formik.touched);
   return (
     <ReactModal
       isOpen={show}

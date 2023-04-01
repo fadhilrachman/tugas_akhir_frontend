@@ -3,39 +3,33 @@ import ReactModal from "react-modal";
 import BaseButton from "../../../components/BaseButton";
 import BaseInput from "../../../components/input/BaseInput";
 import { useFormik } from "formik";
-import {
-  createDataCategory,
-  updateDataCategory,
-} from "../../../redux/categorySlice";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import TextArea from "../../../components/input/TextArea";
+import { logDOM } from "@testing-library/react";
 
 const CreateAndUpdateProduk = ({ show, onHide, update }) => {
   const dispatch = useDispatch();
-  console.log("ini data", update);
+
   const formik = useFormik({
     initialValues: {
       name: "",
+      price: "",
+      kategori: "",
+      description: "",
+      image_url: "",
       tag: [],
     },
     onSubmit: async (val) => {
-      if (update) {
-        await dispatch(updateDataCategory({ id: update._id, name: val.name }));
-      } else {
-        await dispatch(createDataCategory(val));
-      }
       formik.resetForm();
       onHide();
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("nama kategori tidak boleh kosong"),
+      name: Yup.string().required("nama produk tidak boleh kosong"),
+      price: Yup.string().required("harga tidak boleh kosong"),
+      kategori: Yup.string().required("kategori  tidak boleh kosong"),
     }),
   });
-
-  useEffect(() => {
-    formik.setFieldValue("name", update?.name);
-  }, [update]);
 
   const tag = [
     "burger",
@@ -48,7 +42,7 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
     "drink",
     "eat",
   ];
-  console.log("formik", formik.values);
+  console.log(formik.values);
   return (
     <ReactModal
       isOpen={show}
@@ -83,11 +77,11 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
               Harga
             </label>
             <BaseInput
-              name="name"
+              name="price"
               onChange={formik.handleChange}
-              value={formik.values.name}
-              isInvalid={formik.errors.name && formik.touched.name}
-              errMessage={formik.errors.name}
+              value={formik.values.price}
+              isInvalid={formik.errors.price && formik.touched.price}
+              errMessage={formik.errors.price}
             />
           </div>{" "}
           <div className="flex flex-col my-4 ">
@@ -95,11 +89,11 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
               Kategori
             </label>
             <BaseInput
-              name="name"
+              name="kategori"
               onChange={formik.handleChange}
-              value={formik.values.name}
-              isInvalid={formik.errors.name && formik.touched.name}
-              errMessage={formik.errors.name}
+              value={formik.values.kategori}
+              isInvalid={formik.errors.kategori && formik.touched.kategori}
+              errMessage={formik.errors.kategori}
             />
           </div>{" "}
           <div className="flex flex-col my-4 ">
