@@ -4,12 +4,22 @@ import BaseButton from "../../../components/BaseButton";
 import BaseInput from "../../../components/input/BaseInput";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TextArea from "../../../components/input/TextArea";
 import { logDOM } from "@testing-library/react";
-
+import { getDataCategory } from "../../../redux/categorySlice";
+import Select from "../../../components/input/Select";
+import { getDataTags } from "../../../redux/tagSlice";
 const CreateAndUpdateProduk = ({ show, onHide, update }) => {
   const dispatch = useDispatch();
+  const kategori = useSelector((state) => state.Category).data?.result;
+  const tag = useSelector((state) => state.Tag).data?.result;
+
+  useEffect(() => {
+    dispatch(getDataCategory());
+    dispatch(getDataTags());
+  }, [dispatch]);
+  console.log(kategori);
 
   const formik = useFormik({
     initialValues: {
@@ -31,22 +41,23 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
     }),
   });
 
-  const tag = [
-    "burger",
-    "jangfood",
-    "chickent",
-    "chickent",
-    "chickent",
-    "chickent",
-    "chickent",
-    "drink",
-    "eat",
-  ];
+  // const tag = [
+  //   "burger",
+  //   "jangfood",
+  //   "chickent",
+  //   "chickent",
+  //   "chickent",
+  //   "chickent",
+  //   "chickent",
+  //   "drink",
+  //   "eat",
+  // ];
   console.log(formik.values);
   return (
     <ReactModal
       isOpen={show}
       onRequestClose={() => onHide()}
+      className="fixed top-0 left-0 right-0 bottom-0  flex items-center  bg-fixed justify-center text-gray-900"
       // className="relative font-index left-0 right-0 flex items-center font-display justify-center text-gray-900"
       overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50"
       contentLabel="Example Modal"
@@ -58,9 +69,9 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
         <form
           action=""
           onSubmit={formik.handleSubmit}
-          className="grid grid-cols-2 gap-x-5"
+          className="grid grid-cols-2 gap-x-10"
         >
-          <div className="flex flex-col my-4 ">
+          <div className="flex flex-col mb-3 ">
             <label htmlFor="" className="mb-3">
               Nama Produks
             </label>
@@ -72,7 +83,7 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
               errMessage={formik.errors.name}
             />
           </div>{" "}
-          <div className="flex flex-col my-4 ">
+          <div className="flex flex-col mb-3 ">
             <label htmlFor="" className="mb-3">
               Harga
             </label>
@@ -84,24 +95,46 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
               errMessage={formik.errors.price}
             />
           </div>{" "}
-          <div className="flex flex-col my-4 ">
+          <div className="flex flex-col mb-3 ">
             <label htmlFor="" className="mb-3">
               Kategori
             </label>
-            <BaseInput
+            <Select
               name="kategori"
               onChange={formik.handleChange}
               value={formik.values.kategori}
               isInvalid={formik.errors.kategori && formik.touched.kategori}
               errMessage={formik.errors.kategori}
-            />
+            >
+              <option value="">kategori</option>
+              {kategori?.map((val) => (
+                <option>{val.name}</option>
+              ))}
+            </Select>
           </div>{" "}
-          <div className="flex flex-col my-4 ">
+          <div className="flex flex-col mb-3 ">
+            <label htmlFor="" className="mb-3">
+              image produk
+            </label>
+            <input
+              class="block w-full text-sm p-2 text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
+              id="multiple_files"
+              type="file"
+              multiple
+            ></input>
+          </div>
+          <div className="flex flex-col mb-3 ">
+            <label htmlFor="" className="mb-3">
+              Deskripsi
+            </label>
+            <TextArea />
+          </div>{" "}
+          <div className="flex flex-col mb-3 ">
             <label htmlFor="" className="mb-3">
               Tag
             </label>
             <div className="grid grid-cols-4 gap-3">
-              {tag.map((val) => (
+              {tag?.map((val) => (
                 <div class="flex items-center">
                   <input
                     type="checkbox"
@@ -114,36 +147,11 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
                     for="link-checkbox"
                     class="ml-2 text-sm   dark:text-gray-300"
                   >
-                    {val}
+                    {val.name}
                   </label>
                 </div>
               ))}
             </div>
-
-            {/* <BaseInput
-              name="name"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              isInvalid={formik.errors.name && formik.touched.name}
-              errMessage={formik.errors.name}
-            /> */}
-          </div>{" "}
-          <div className="flex flex-col my-4 ">
-            <label htmlFor="" className="mb-3">
-              image produk
-            </label>
-            <input
-              class="block w-full text-sm p-2 text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
-              id="multiple_files"
-              type="file"
-              multiple
-            ></input>
-          </div>
-          <div className="flex flex-col my-4 col-span-2">
-            <label htmlFor="" className="mb-3">
-              Deskripsi
-            </label>
-            <TextArea />
           </div>{" "}
           <div className="flex justify-end">
             <BaseButton variant="white" onClick={() => onHide()}>
