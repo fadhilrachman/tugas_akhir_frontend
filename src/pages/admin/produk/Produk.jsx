@@ -9,14 +9,14 @@ import CreateAndUpdateProduk from "./CreateAndUpdateProduk";
 const Produk = () => {
   const dispatch = useDispatch();
   const produk = useSelector((state) => state.Produk);
-  const dataProduk = produk.data?.result;
+  const dataProduk = produk.data.result;
   const [show, setShow] = useState({
     create: false,
     update: false,
   });
   useEffect(() => {
     dispatch(getDataProduks());
-  }, [dispatch]);
+  }, []);
 
   const column = [
     {
@@ -68,7 +68,8 @@ const Produk = () => {
       ),
     },
   ];
-  console.log(show);
+
+  console.log(dataProduk);
   return (
     <div>
       <div className="flex justify-between mb-8">

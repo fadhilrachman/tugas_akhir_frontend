@@ -69,12 +69,14 @@ const Navbar = () => {
         </div>
         <div className="flex items-center justify-between">
           {" "}
-          <div className="relative  w-16 py-3 ">
-            <div className="w-1 absolute h-1 right-8 top-1 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold p-2">
-              <small>1</small>
+          <Link to="/keranjang">
+            <div className="relative  w-16 py-3 ">
+              <div className="w-1 absolute h-1 right-8 top-1 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold p-2">
+                <small>1</small>
+              </div>
+              <i class="bi bi-cart  text-2xl font-bold "></i>
             </div>
-            <i class="bi bi-cart  text-2xl font-bold "></i>
-          </div>
+          </Link>
           {/* <i class="bi bi-person-fill mr-2"></i>login */}
           <div className="">
             {token && username ? (

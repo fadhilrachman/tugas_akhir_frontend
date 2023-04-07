@@ -63,6 +63,7 @@ export const updateAlamat = createAsyncThunk(
     return result;
   }
 );
+
 export const deleteAlamat = createAsyncThunk("/delete-alamat", async (id) => {
   const result = await axios.delete(
     `${process.env.REACT_APP_API}/address/${id}`,
@@ -74,6 +75,7 @@ export const deleteAlamat = createAsyncThunk("/delete-alamat", async (id) => {
   );
   return result;
 });
+
 const alamatSlice = createSlice({
   name: "alamat",
   initialState: {

@@ -10,6 +10,7 @@ import { logDOM } from "@testing-library/react";
 import { getDataCategory } from "../../../redux/categorySlice";
 import Select from "../../../components/input/Select";
 import { getDataTags } from "../../../redux/tagSlice";
+import { createdDataProduk } from "../../../redux/produkSlice";
 const CreateAndUpdateProduk = ({ show, onHide, update }) => {
   const dispatch = useDispatch();
   const kategori = useSelector((state) => state.Category).data?.result;
@@ -31,6 +32,7 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
       tag: [],
     },
     onSubmit: async (val) => {
+      await dispatch(createdDataProduk(val));
       formik.resetForm();
       onHide();
     },
@@ -53,6 +55,11 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
   //   "eat",
   // ];
   console.log(formik.values);
+  const handleImage = (e) => {
+    const img = e.target.value;
+    formik.setFieldValue("image_url", img);
+    console.log(img);
+  };
   return (
     <ReactModal
       isOpen={show}
@@ -108,7 +115,7 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
             >
               <option value="">kategori</option>
               {kategori?.map((val) => (
-                <option>{val.name}</option>
+                <option value={val._id}>{val.name}</option>
               ))}
             </Select>
           </div>{" "}
@@ -119,6 +126,9 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
             <input
               class="block w-full text-sm p-2 text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
               id="multiple_files"
+              name="image_url"
+              onChange={handleImage}
+              value={formik.values.image_url}
               type="file"
               multiple
             ></input>
@@ -127,7 +137,11 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
             <label htmlFor="" className="mb-3">
               Deskripsi
             </label>
-            <TextArea />
+            <TextArea
+              name="description"
+              onChange={formik.handleChange}
+              value={formik.values.description}
+            />
           </div>{" "}
           <div className="flex flex-col mb-3 ">
             <label htmlFor="" className="mb-3">
@@ -138,7 +152,7 @@ const CreateAndUpdateProduk = ({ show, onHide, update }) => {
                 <div class="flex items-center">
                   <input
                     type="checkbox"
-                    value={val}
+                    value={val._id}
                     name="tag"
                     onChange={formik.handleChange}
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"

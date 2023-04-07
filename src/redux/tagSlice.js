@@ -17,6 +17,7 @@ export const createDataTag = createAsyncThunk("/create-tag", async (param) => {
   });
   return result;
 });
+
 export const updateDatatag = createAsyncThunk("/update-tag", async (param) => {
   const { id, name } = param;
   const result = await axios.put(

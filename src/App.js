@@ -11,6 +11,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Profile from "./pages/profile";
 import Admin from "./pages/admin";
+import Keranjang from "./pages/keranjang";
 
 function App() {
   const [showNav, setShowNav] = useState(false);
@@ -24,6 +25,7 @@ function App() {
             <Route path="/" element={<ListProduk />} />
             <Route path="/login" element={<Login setShowNav={setShowNav} />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/keranjang" element={<Keranjang />} />
             {token ? (
               <>
                 <Route path="/profile" element={<Profile />} />

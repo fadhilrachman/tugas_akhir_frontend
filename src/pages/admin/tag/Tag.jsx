@@ -19,7 +19,7 @@ const Tag = () => {
   const [id, setId] = useState("");
   useEffect(() => {
     dispatch(getDataTags());
-  }, [dispatch, show]);
+  }, [dispatch]);
 
   const handleDelete = async () => {
     await dispatch(deleteDataTag(id));

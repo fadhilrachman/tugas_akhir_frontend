@@ -5,7 +5,7 @@ const BaseInput = (props) => {
     <>
       <input
         {...props}
-        className={`focus:outline-none   text-neutral-500 border rounded-lg px-3 py-2  ${
+        className={`focus:outline-none text-gray-900 w-full   border rounded-lg px-3 py-2  ${
           props.class
         } ${props.isInvalid ? " border-red-500 " : "focus:border-emerald-600"}`}
       />
