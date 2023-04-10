@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getDataTags } from "../../redux/tagSlice";
 import { getDataProduks } from "../../redux/produkSlice";
-import { getDataCategory } from "../../redux/categorySlice";
-import { FormatRupiah } from "@arismun/format-rupiah";
 import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 const ListProduk = () => {
@@ -58,7 +56,7 @@ const ListProduk = () => {
               }`}
               onClick={() => handleTag(val._id)}
             >
-              {val.name}
+              #{val.name}
             </p>
           ))}
         </div>
@@ -70,7 +68,7 @@ const ListProduk = () => {
 
           <div className="mt-8 grid  grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xl:gap-10 gap-x-28 gap-y-28">
             {dataProduk?.map((val) => (
-              <div className="mt-4 shadow-md rounded">
+              <div className="mt-4 shadow-md rounded relative">
                 <img
                   // src="https://images.pexels.com/photos/51312/kiwi-fruit-vitamins-healthy-eating-51312.jeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMN2HtLKerGA71nhLcStkDIk4u52H5CtwNcrFhLy0oMg&s"
@@ -81,7 +79,7 @@ const ListProduk = () => {
                 <div className="px-2 py-2 pb-5">
                   <div className="w-full flex   ">
                     {val?.tag.map((itemTag) => (
-                      <small className="bg-emerald-600 text-white py-1 px-2  rounded">
+                      <small className="bg-emerald-600 text-white py-1 px-2 mr-1  rounded">
                         #{itemTag.name}
                       </small>
                     ))}
@@ -90,10 +88,14 @@ const ListProduk = () => {
                     {val?.category?.name}
                   </small>
                   <div className="mt-2">
-                    <span className="text-sm">{val.name}</span>
+                    <p className="text-sm">{val.name}</p>
+                    <p className="text-emerald-600 mt-2">Rp.{val.price}</p>
+                    <small className=" mt-2">
+                      Produk yang megandung sinadia yang sehat
+                    </small>
                   </div>
                 </div>
-                <div className="flex justify-center p-2 bg-neutral-100 hover:bg-neutral-200 hover:cursor-pointer">
+                <div className="flex justify-center items-end p-2 bg-neutral-100 hover:bg-neutral-200 hover:cursor-pointer">
                   <i class="bi bi-cart-fill text-emerald-600 "></i>
                 </div>
               </div>
