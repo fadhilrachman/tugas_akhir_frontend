@@ -79,7 +79,9 @@ const Navbar = () => {
           </Link>
           {/* <i class="bi bi-person-fill mr-2"></i>login */}
           <div className="">
-            {token && username ? (
+            {user.isLoading ? (
+              <div className="h-10 w-10 col-start-2  mx-auto  rounded-full border-emerald-600 border-2 border-b-white animate-spin"></div>
+            ) : username ? (
               <div className="hover:cursor-pointer flex justify-center items-center group relative  py-3">
                 <div className="bg-emerald-500 w-7 h-7 rounded-full"></div>
                 <span className="ml-2">{username}</span>

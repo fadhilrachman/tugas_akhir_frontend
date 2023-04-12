@@ -13,6 +13,22 @@ export const getAllCart = createAsyncThunk("/get-keranjang", async (id) => {
   return result;
 });
 
+export const createCart = createAsyncThunk(
+  "/create-keranjang",
+  async (param) => {
+    const result = await axios.post(
+      `${process.env.REACT_APP_API}/cart`,
+      param,
+      {
+        headers: {
+          Authorization: ` ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return result;
+  }
+);
+
 const keranjangSlice = createSlice({
   name: "keranjang",
   initialState: {
@@ -28,6 +44,15 @@ const keranjangSlice = createSlice({
       state.data = result?.payload?.data;
     },
     [getAllCart.rejected]: (state) => {
+      state.status = "error";
+    },
+    [createCart.pending]: (state) => {
+      state.status = "loading";
+    },
+    [createCart.fulfilled]: (state, result) => {
+      state.status = "success";
+    },
+    [createCart.rejected]: (state) => {
       state.status = "error";
     },
   },

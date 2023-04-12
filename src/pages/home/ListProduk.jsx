@@ -4,19 +4,26 @@ import { getDataTags } from "../../redux/tagSlice";
 import { getDataProduks } from "../../redux/produkSlice";
 import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
+import toast, { Toaster } from "react-hot-toast";
+import { createCart } from "../../redux/KeranjangSlice";
+import axios from "axios";
+import { FormatRupiah } from "@arismun/format-rupiah";
+
 const ListProduk = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const Tags = useSelector((state) => state.Tag);
   const Category = useSelector((state) => state.Category);
   const Produk = useSelector((state) => state.Produk);
   const dataProduk = Produk?.data.result;
+  const user = useSelector((state) => state.Auth);
+  const idUser = user.data?.result?._id;
   const dataTags = Tags?.data.result;
   const [param, setParam] = useState({
     category: Category.category,
     tag: [],
   });
 
+  console.log(idUser);
   useEffect(() => {
     dispatch(getDataTags());
     dispatch(getDataProduks(param));
@@ -37,6 +44,13 @@ const ListProduk = () => {
     }
     return setParam({ ...param, tag: [...param.tag, val] });
   };
+
+  const handleChart = async (produk) => {
+    const cart = { produk: produk._id, user: idUser };
+    await dispatch(createCart(cart));
+    toast.success("Success Message");
+  };
+
   return (
     <div className="font-index text-gray-900">
       <Navbar />
@@ -67,42 +81,56 @@ const ListProduk = () => {
           </h1>
 
           <div className="mt-8 grid  grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xl:gap-10 gap-x-28 gap-y-28">
-            {dataProduk?.map((val) => (
-              <div className="mt-4 shadow-md rounded relative">
-                <img
-                  // src="https://images.pexels.com/photos/51312/kiwi-fruit-vitamins-healthy-eating-51312.jeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMN2HtLKerGA71nhLcStkDIk4u52H5CtwNcrFhLy0oMg&s"
-                  alt=""
-                  className="w-full h-44 rounded-t"
-                  srcset=""
-                />
-                <div className="px-2 py-2 pb-5">
-                  <div className="w-full flex   ">
-                    {val?.tag.map((itemTag) => (
-                      <small className="bg-emerald-600 text-white py-1 px-2 mr-1  rounded">
-                        #{itemTag.name}
-                      </small>
-                    ))}
-                  </div>
-                  <small className="text-neutral-400">
-                    {val?.category?.name}
-                  </small>
-                  <div className="mt-2">
-                    <p className="text-sm">{val.name}</p>
-                    <p className="text-emerald-600 mt-2">Rp.{val.price}</p>
-                    <small className=" mt-2">
-                      Produk yang megandung sinadia yang sehat
+            {Produk.status == "loading" ? (
+              <div className="h-10 w-10 col-start-2  rounded-full border-emerald-600 border-2 border-b-white animate-spin"></div>
+            ) : dataProduk?.length != 0 ? (
+              dataProduk?.map((val) => (
+                <div className="mt-4 shadow-md rounded relative">
+                  <img
+                    // src="https://images.pexels.com/photos/51312/kiwi-fruit-vitamins-healthy-eating-51312.jeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMN2HtLKerGA71nhLcStkDIk4u52H5CtwNcrFhLy0oMg&s"
+                    alt=""
+                    className="w-full h-44 rounded-t"
+                    srcset=""
+                  />
+                  <div className="px-2 py-2 pb-5">
+                    <div className="w-full flex   ">
+                      {val?.tag.map((itemTag) => (
+                        <small className="bg-emerald-600 text-white py-1 px-2 mr-1  rounded">
+                          #{itemTag.name}
+                        </small>
+                      ))}
+                    </div>
+                    <small className="text-neutral-400">
+                      {val?.category?.name}
                     </small>
+                    <div className="mt-2">
+                      <p className="text-sm">{val.name}</p>
+                      <p className="text-emerald-600 mt-2">
+                        <FormatRupiah value={val.price} />
+                      </p>
+                      <small className=" mt-2">{val?.description}</small>
+                    </div>
+                  </div>
+                  <div
+                    className="flex justify-center items-end p-2 bg-neutral-100 hover:bg-neutral-200 hover:cursor-pointer"
+                    onClick={() => handleChart(val)}
+                  >
+                    <i class="bi bi-cart-fill text-emerald-600 "></i>
                   </div>
                 </div>
-                <div className="flex justify-center items-end p-2 bg-neutral-100 hover:bg-neutral-200 hover:cursor-pointer">
-                  <i class="bi bi-cart-fill text-emerald-600 "></i>
-                </div>
+              ))
+            ) : (
+              <div className="col-start-2  w-72 ">
+                <span className="text-3xl  font-bold text-neutral-300">
+                  Tidak ada produk
+                </span>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };
@@ -110,7 +138,7 @@ const ListProduk = () => {
 export default ListProduk;
 
 // {Produk.status == "loading" ? (
-//   <div className="h-10 w-10 col-start-2  rounded-full border-emerald-600 border-2 border-b-white animate-spin"></div>
+//   <div className="h-10 w-10 col-start-2  rounded-full border-netext-neutral-300 border-2 border-b-white animate-spin"></div>
 // ) : dataProduk?.length != 0 ? (
 //   dataProduk?.map((val) => (
 //     <div className="relative group ">
