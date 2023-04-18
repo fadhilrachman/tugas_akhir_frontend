@@ -2,20 +2,34 @@ import React from "react";
 import Navbar from "../../components/Navbar";
 import { getUser } from "../../redux/authSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllCart } from "../../redux/KeranjangSlice";
+import { getAllCart, deleteCart } from "../../redux/KeranjangSlice";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useFormik } from "formik";
 import BaseButton from "../../components/BaseButton";
 import { FormatRupiah } from "@arismun/format-rupiah";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { createInvoice } from "../../redux/invoicceSlice";
+import { getAlamat } from "../../redux/alamatSlice";
+import ModalAlamat from "./ModalAlamat";
+import ModalCreateAlamat from "../../components/modal/ModalCreateAlamat";
+import toast, { Toaster } from "react-hot-toast";
+
 const Keranjang = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const alamat = useSelector((state) => state.Alamat);
+  const [alamatk, setAlamatk] = useState(0);
+  const dataAlamat = alamat.status == "success" && alamat.data?.result[alamatk];
   const user = useSelector((state) => state.Auth);
   const idUser = user.data?.result?._id;
   const keranjang = useSelector((state) => state.Keranjang);
   const dataKernjang = keranjang.data?.result;
   const [page, setPage] = useState("keranjang");
+  const [show, setShow] = useState({
+    alamat: false,
+    createAlamat: false,
+  });
   let total = 0;
 
   const formik = useFormik({
@@ -33,6 +47,9 @@ const Keranjang = () => {
       dispatch(getAllCart(idUser && idUser));
     }
   }, [dispatch, idUser]);
+  useEffect(() => {
+    dispatch(getAlamat({ user: idUser && idUser }));
+  }, [dispatch, show.createAlamat]);
 
   const handleChart = (val) => {
     const isKeyExist = formik.values.groceries.some(
@@ -67,14 +84,41 @@ const Keranjang = () => {
 
     formik.setFieldValue("groceries", inDecrementQty);
   };
-  console.log(formik.values.groceries);
 
+  const handleCheckout = async () => {
+    let produk = formik.values.groceries.map((val) => {
+      return { qty: val.qty, produk: val.produk._id };
+    });
+    let id = formik.values.groceries.map((val) => val._id);
+
+    let checkout = {
+      orders_total: total,
+      user: idUser,
+      order: produk,
+      adress: dataAlamat._id,
+    };
+    dispatch(createInvoice(checkout));
+    dispatch(deleteCart({ id }));
+    toast.success("Pembayaran Berhasil");
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
+  };
+  console.log(formik.values.groceries);
   return (
     <div className="text-gray-900 font-light">
       <Navbar />
-      <div className="px-36 pt-12 grid grid-cols-3 gap-6 ">
+      <div className="px-36 py-12 grid grid-cols-3 gap-6 ">
         <div className="col-span-2">
-          <h1 className="text-3xl font-medium  ">{page}</h1>
+          <h1 className="text-3xl font-medium  ">
+            {page == "keranjang" ? (
+              "keranjang"
+            ) : (
+              <p onClick={() => setPage("keranjang")}>
+                <i class="bi bi-arrow-left-short cursor-pointer"></i>checkout
+              </p>
+            )}
+          </h1>
           <div className="w-full mt-4 rounded bg-neutral-100 h-2"></div>
           {page == "keranjang" ? (
             keranjang.status == "loading" ? (
@@ -88,6 +132,9 @@ const Keranjang = () => {
                       className="mr-4"
                       onChange={() => handleChart({ ...val, key })}
                       name="groceries"
+                      checked={formik.values.groceries.some(
+                        (item) => item.key === key
+                      )}
                       id=""
                     />
                     <div className="w-full">
@@ -143,27 +190,45 @@ const Keranjang = () => {
             )
           ) : (
             <div className=" mt-5">
-              <div className="mb-5 border-b py-5">
+              <div className="mb-5 border-b py-5 ">
                 <p className="font-medium text-base border-b pb-3">
                   Alamat Pengiriman
                 </p>
-                <div className="mt-3 text-sm flex justify-between items-center px-3 ">
-                  <div>
-                    <p className="font-medium text-emerald-600 mb-2">Fadhil</p>
-                    <p>
-                      Provinsi Jawa Barat Kabupaten Garut Kelurahan Sirnajaya{" "}
-                    </p>
-                    <small>Samping masjid</small>
+                {alamat?.data?.result?.length != 0 ? (
+                  <div className="mt-3 text-sm flex justify-between items-center px-3 ">
+                    <div>
+                      <p className="font-medium text-emerald-600 mb-2">
+                        {dataAlamat?.nama}
+                      </p>
+                      <p>
+                        Provinsi {dataAlamat?.provinsi} Kabupaten{" "}
+                        {dataAlamat?.kabupaten} Kelurahan{" "}
+                        {dataAlamat?.kelurahan}{" "}
+                      </p>
+                      <small>{dataAlamat.detail_alamat}</small>
+                    </div>
+                    <span
+                      className="text-emerald-600 cursor-pointer "
+                      onClick={() => setShow({ alamat: true })}
+                    >
+                      pilih alamat
+                    </span>
                   </div>
-                  <span className="text-emerald-600">pilih alamat</span>
-                </div>
+                ) : (
+                  <div
+                    className="text-emerald-600 cursor-pointer text-center mt-4"
+                    onClick={() => setShow({ createAlamat: true })}
+                  >
+                    Tambahkan alamat
+                  </div>
+                )}
               </div>
               <div className="">
                 <p className="font-medium text-base border-b pb-3">
                   List Barang
                 </p>
                 {formik.values.groceries?.map((val) => (
-                  <div className="mt-3 px-3">
+                  <div className="mt-3 px-3 border-b pb-5">
                     <p className="font-medium text-emerald-600 ">
                       {val?.produk.name}
                     </p>
@@ -186,7 +251,7 @@ const Keranjang = () => {
                         </div>
                       </div>
                       <div className="text-emerald-600">
-                        Total :{" "}
+                        SubTotal :{" "}
                         <FormatRupiah value={val.qty * val?.produk.price} />
                       </div>
                     </div>
@@ -225,12 +290,27 @@ const Keranjang = () => {
           <BaseButton
             class="mt-5"
             disabled={formik.values.groceries.length == 0}
-            onClick={() => setPage("checkout")}
+            onClick={() =>
+              page == "keranjang" ? setPage("checkout") : handleCheckout()
+            }
           >
-            Beli
+            {page == "keranjang" ? "Checkout" : "Bayar"}
           </BaseButton>
         </div>
       </div>
+      <ModalAlamat
+        show={show.alamat}
+        onHide={() => setShow({ alamat: false })}
+        dataAlamat={dataAlamat}
+        data={alamat?.data?.result}
+        alamat={alamatk}
+        setKey={setAlamatk}
+      />
+      <ModalCreateAlamat
+        show={show.createAlamat}
+        onHide={() => setShow({ createAlamat: false })}
+      />
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };

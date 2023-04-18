@@ -4,6 +4,7 @@ import ModalCreateAlamat from "../../../components/modal/ModalCreateAlamat";
 import { getAlamat, deleteAlamat } from "../../../redux/alamatSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { getUser } from "../../../redux/authSlice";
+
 const Alamat = () => {
   const dispatch = useDispatch();
   const [show, setShow] = useState({

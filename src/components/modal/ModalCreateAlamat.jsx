@@ -69,37 +69,7 @@ const ModalCreateAlamat = ({ show, onHide, update }) => {
     formik.setFieldValue("user", idUser);
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (update != undefined) {
-  //     formik.setFieldValue("nama", update?.nama);
-  //     formik.setFieldValue("detail_alamat", update?.detail_alamat);
-  //     formik.setFieldValue("provinsi", update?.provinsi);
-  //     formik.setFieldValue("kecamatan", update?.kecamatan);
-  //     formik.setFieldValue("kabupaten", update?.kabupaten);
-  //     formik.setFieldValue("kelurahan", update?.kelurahan);
-  //     console.log("ini kabupaten", update.kabupaten);
-  //     dataProvinsi?.map((val) =>
-  //       val.nama == update?.provinsi
-  //         ? setParam({
-  //             ...param,
-  //             id_provinsi: val?.id,
-  //           })
-  //         : ""
-  //     );
-  //     console.log(
-  //       "coba---",
-  //       dataKabupten?.map((val) =>
-  //         val?.nama
-  //           ? setParam({
-  //               ...param,
-  //               id_kabupaten: val?.id,
-  //             })
-  //           : ""
-  //       )
-  //     );
-  //   }
-  //   console.log(param);
-  // }, [update]);
+ 
 
   useEffect(() => {
     dispatch(getDataKabupaten(param.id_provinsi));

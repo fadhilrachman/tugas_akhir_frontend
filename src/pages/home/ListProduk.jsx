@@ -6,7 +6,6 @@ import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import { createCart } from "../../redux/KeranjangSlice";
-import axios from "axios";
 import { FormatRupiah } from "@arismun/format-rupiah";
 
 const ListProduk = () => {

@@ -6,6 +6,7 @@ import authSlice from "./redux/authSlice";
 import alamatSlice from "./redux/alamatSlice";
 import regionSlice from "./redux/regionSlice";
 import KeranjangSlice from "./redux/KeranjangSlice";
+import invoicceSlice from "./redux/invoicceSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     Alamat: alamatSlice,
     Region: regionSlice,
     Keranjang: KeranjangSlice,
+    Invoice: invoicceSlice,
   },
 });
 

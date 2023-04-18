@@ -29,6 +29,21 @@ export const createCart = createAsyncThunk(
   }
 );
 
+export const deleteCart = createAsyncThunk(
+  "/delete-keranjang",
+  async (param) => {
+    const result = await axios.delete(
+      `${process.env.REACT_APP_API}/cart`,
+      param,
+      {
+        headers: {
+          Authorization: ` ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return result;
+  }
+);
 const keranjangSlice = createSlice({
   name: "keranjang",
   initialState: {
@@ -53,6 +68,15 @@ const keranjangSlice = createSlice({
       state.status = "success";
     },
     [createCart.rejected]: (state) => {
+      state.status = "error";
+    },
+    [deleteCart.pending]: (state) => {
+      state.status = "loading";
+    },
+    [deleteCart.fulfilled]: (state, result) => {
+      state.status = "success";
+    },
+    [deleteCart.rejected]: (state) => {
       state.status = "error";
     },
   },
