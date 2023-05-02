@@ -14,6 +14,17 @@ export const createInvoice = createAsyncThunk("/invoice", async (param) => {
   return result;
 });
 
+export const getInvoice = createAsyncThunk("/invoice-get", async (param) => {
+  const result = await axios.get(
+    `${process.env.REACT_APP_API}/invoices/?user=${param}`,
+    {
+      headers: {
+        Authorization: ` ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return result;
+});
 const invoiceSlice = createSlice({
   name: "invoice",
   initialState: {
@@ -21,16 +32,6 @@ const invoiceSlice = createSlice({
     data: [],
   },
   extraReducers: {
-    //   [getAllCart.pending]: (state) => {
-    //     state.status = "loading";
-    //   },
-    //   [getAllCart.fulfilled]: (state, result) => {
-    //     state.status = "success";
-    //     state.data = result?.payload?.data;
-    //   },
-    //   [getAllCart.rejected]: (state) => {
-    //     state.status = "error";
-    //   },
     [createInvoice.pending]: (state) => {
       state.status = "loading";
     },
@@ -38,6 +39,16 @@ const invoiceSlice = createSlice({
       state.status = "success";
     },
     [createInvoice.rejected]: (state) => {
+      state.status = "error";
+    },
+    [getInvoice.pending]: (state) => {
+      state.status = "loading";
+    },
+    [getInvoice.fulfilled]: (state, result) => {
+      state.status = "success";
+      state.data = result?.payload?.data;
+    },
+    [getInvoice.rejected]: (state) => {
       state.status = "error";
     },
   },

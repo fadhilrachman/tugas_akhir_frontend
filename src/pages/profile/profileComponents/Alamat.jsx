@@ -3,7 +3,6 @@ import BaseButton from "../../../components/BaseButton";
 import ModalCreateAlamat from "../../../components/modal/ModalCreateAlamat";
 import { getAlamat, deleteAlamat } from "../../../redux/alamatSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { getUser } from "../../../redux/authSlice";
 
 const Alamat = () => {
   const dispatch = useDispatch();
@@ -18,7 +17,6 @@ const Alamat = () => {
   const dataAlamat = alamat.data?.result;
   useEffect(() => {
     dispatch(getAlamat({ user: idUser && idUser }));
-    dispatch(getUser({ isLogin: true }));
   }, [dispatch, show]);
 
   return (

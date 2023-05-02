@@ -1,11 +1,18 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import Alamat from "./profileComponents/Alamat";
 import Biodata from "./profileComponents/Biodata";
 import Pesanan from "./profileComponents/Pesanan";
+import { useSelector, useDispatch } from "react-redux";
+import { getUser } from "../../redux/authSlice";
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const [path, setPath] = useState("Biodata Diri");
+  useEffect(() => {
+    dispatch(getUser({ isLogin: true }));
+  }, [path]);
   const tab = [
     {
       name: "Biodata Diri",
