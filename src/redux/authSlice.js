@@ -14,7 +14,7 @@ export const getUser = createAsyncThunk("/get-user", async (param) => {
     `${process.env.REACT_APP_API}/user?isLogin=${param.isLogin}`,
     {
       headers: {
-        Authorization: ` ${localStorage.getItem("token")}`,
+        Authorization: `${localStorage.getItem("token")}`,
       },
     }
   );
@@ -33,69 +33,56 @@ export const logout = createAsyncThunk("/logout", async () => {
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    isError: null,
-    isLoading: false,
-    isSucces: null,
+    status: "",
     data: [],
   },
   extraReducers: {
     [register.pending]: (state) => {
-      state.isLoading = true;
-      state.isSucces = false;
-      state.isError = false;
+      state.status = "loading";
+      state.result = false;
     },
     [register.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSucces = action.payload.data;
-      state.isError = false;
+      state.result = action.payload.data;
+      state.status = "success";
     },
     [register.rejected]: (state) => {
-      state.isLoading = false;
-      state.isSucces = false;
-      state.isError = true;
+      state.result = false;
+      state.status = "error";
     },
     [login.pending]: (state) => {
-      state.isLoading = true;
-      state.isSucces = false;
-      state.isError = false;
+      state.status = "loading";
+      state.result = false;
     },
     [login.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSucces = action.payload.data;
-      state.isError = false;
+      state.result = action.payload.data;
+      state.status = "success";
     },
-    [login.rejected]: (state) => {
-      state.isLoading = false;
-      state.isSucces = false;
-      state.isError = true;
+    [login.rejected]: (state, action) => {
+      state.result = false;
+      state.status = "error";
     },
     [logout.pending]: (state) => {
-      state.isLoading = true;
-      state.isSucces = false;
-      state.isError = false;
+      state.status = "loading";
+
+      state.result = false;
     },
     [logout.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSucces = action.payload.data;
-      state.isError = false;
+      state.result = action.payload.data;
+      state.status = "success";
     },
     [logout.rejected]: (state) => {
-      state.isLoading = false;
-      state.isSucces = false;
-      state.isError = true;
+      state.result = false;
+      state.status = "error";
     },
     [getUser.pending]: (state) => {
-      state.isLoading = true;
-      state.isError = false;
+      state.status = "loading";
     },
     [getUser.fulfilled]: (state, action) => {
-      state.isLoading = false;
       state.data = action.payload.data;
-      state.isError = false;
+      state.status = "success";
     },
     [getUser.rejected]: (state) => {
-      state.isLoading = false;
-      state.isError = true;
+      state.status = "error";
     },
   },
 });

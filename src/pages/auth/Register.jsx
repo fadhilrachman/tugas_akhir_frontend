@@ -11,7 +11,7 @@ const Register = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.Auth);
   const navigate = useNavigate();
-  console.log(auth);
+  console.log({ auth });
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -30,13 +30,10 @@ const Register = () => {
         .required("confirm password tidak boleh kosong"),
     }),
     onSubmit: (val) => {
-      dispatch(register({ ...val, role: "admin" }));
-      if (auth.isSucces.message == "register succes") {
-        navigate("/login");
-      }
+      dispatch(register({ ...val, role: "user" }));
+      navigate("/login");
     },
   });
-  console.log(formik.values);
   return (
     <div className="font-index flex justify-center items-center h-screen flex-col ">
       <span className="text-3xl text-green-600 font-bold">Register</span>

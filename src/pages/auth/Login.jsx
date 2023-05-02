@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { login } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = ({ setShowNav }) => {
   const dispatch = useDispatch();
@@ -22,15 +23,23 @@ const Login = ({ setShowNav }) => {
     }),
     onSubmit: async (val) => {
       await dispatch(login(val));
+
       setShowNav(true);
     },
   });
+
   useEffect(() => {
-    localStorage.setItem("token", auth.isSucces?.token);
-    if (auth.isSucces?.token) {
+    if (auth.status == "error") {
+      toast.error("pastikan password dan email benar");
+    }
+    if (auth.status == "success" && auth.result?.token) {
+      localStorage.setItem("token", auth.result?.token);
+
       navigate("/");
     }
-  }, [auth.isSucces]);
+  }, [auth.status]);
+
+  console.log({ auth });
   return (
     <div className="font-index flex justify-center items-center h-screen flex-col">
       <span className="text-3xl text-green-600 font-bold">Login</span>
@@ -65,6 +74,7 @@ const Login = ({ setShowNav }) => {
           </span>
         </small>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };
