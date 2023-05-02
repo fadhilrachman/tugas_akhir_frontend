@@ -86,10 +86,10 @@ const Keranjang = () => {
   };
 
   const handleCheckout = async () => {
-    let produk = formik.values.groceries.map((val) => {
+    let produk = formik.values.groceries?.map((val) => {
       return { qty: val.qty, produk: val.produk._id };
     });
-    let id = formik.values.groceries.map((val) => val._id);
+    let id = formik.values.groceries?.map((val) => val._id);
 
     let checkout = {
       orders_total: total,
@@ -98,13 +98,14 @@ const Keranjang = () => {
       adress: dataAlamat._id,
     };
     dispatch(createInvoice(checkout));
+    console.log({ id });
     dispatch(deleteCart({ id }));
     toast.success("Pembayaran Berhasil");
     setTimeout(() => {
       navigate("/");
     }, 2000);
   };
-  console.log(formik.values.groceries);
+  console.log({ dataAlamat });
   return (
     <div className="text-gray-900 font-light">
       <Navbar />
@@ -194,16 +195,15 @@ const Keranjang = () => {
                 <p className="font-medium text-base border-b pb-3">
                   Alamat Pengiriman
                 </p>
-                {alamat?.data?.result?.length != 0 ? (
+                {alamat?.data?.result.length != 0 ? (
                   <div className="mt-3 text-sm flex justify-between items-center px-3 ">
                     <div>
                       <p className="font-medium text-emerald-600 mb-2">
-                        {dataAlamat?.nama}
+                        {dataAlamat.nama}
                       </p>
                       <p>
-                        Provinsi {dataAlamat?.provinsi} Kabupaten{" "}
-                        {dataAlamat?.kabupaten} Kelurahan{" "}
-                        {dataAlamat?.kelurahan}{" "}
+                        Provinsi {dataAlamat.provinsi} Kabupaten{" "}
+                        {dataAlamat.kabupaten} Kelurahan {dataAlamat.kelurahan}{" "}
                       </p>
                       <small>{dataAlamat.detail_alamat}</small>
                     </div>
@@ -230,10 +230,10 @@ const Keranjang = () => {
                 {formik.values.groceries?.map((val) => (
                   <div className="mt-3 px-3 border-b pb-5">
                     <p className="font-medium text-emerald-600 ">
-                      {val?.produk.name}
+                      {val?.produk?.name}
                     </p>
                     <small className="text-neutral-400">
-                      {val?.produk.category.name}
+                      {val?.produk?.categor?.name}
                     </small>
                     <div className=" flex justify-between pr-5 items-center">
                       <div className="flex">
@@ -243,10 +243,10 @@ const Keranjang = () => {
                           className="mt-2 w-14 h-1w-14 mr-4"
                         />
                         <div className="text-sm">
-                          <p>{val?.produk.description}</p>
+                          <p>{val?.produk?.description}</p>
                           <p>Jumlah barang : {val?.qty}</p>
                           <p className="">
-                            harga : <FormatRupiah value={val?.produk.price} />
+                            harga : <FormatRupiah value={val?.produk?.price} />
                           </p>
                         </div>
                       </div>
@@ -265,10 +265,10 @@ const Keranjang = () => {
           <div>
             <h1 className="font-medium text-lg">Ringkasan Belanja</h1>
             {formik.values.groceries.length != 0 ? (
-              formik.values.groceries.map((val) => (
+              formik.values.groceries?.map((val) => (
                 <div className="mt-3 text-neutral-500 flex justify-between">
                   <span>
-                    {val.produk.name}({val.qty})
+                    {val.produk?.name}({val.qty})
                   </span>
                   <span>
                     <FormatRupiah

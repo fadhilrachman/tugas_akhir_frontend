@@ -32,15 +32,12 @@ export const createCart = createAsyncThunk(
 export const deleteCart = createAsyncThunk(
   "/delete-keranjang",
   async (param) => {
-    const result = await axios.delete(
-      `${process.env.REACT_APP_API}/cart`,
-      param,
-      {
-        headers: {
-          Authorization: ` ${localStorage.getItem("token")}`,
-        },
-      }
-    );
+    const result = await axios.delete(`${process.env.REACT_APP_API}/cart`, {
+      headers: {
+        Authorization: ` ${localStorage.getItem("token")}`,
+      },
+      data: param,
+    });
     return result;
   }
 );
