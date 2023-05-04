@@ -36,63 +36,71 @@ const Pesanan = () => {
           </tr>
         </thead>
         <tbody>
-          {dataIvoice?.map((val, key) => {
-            let totalQty = 0;
-            console.log(val.order.map((val) => (totalQty += val.qty)));
+          {dataIvoice?.length != 0 ? (
+            dataIvoice?.map((val, key) => {
+              let totalQty = 0;
+              console.log(val.order.map((val) => (totalQty += val.qty)));
 
-            return (
-              <>
-                {" "}
-                <tr className="bg-white border-b ">
-                  <th
-                    className={`px-6 py-4 font-medium   bg-gray-50 w-10 hover:cursor-pointer  ${
-                      open != key && "-rotate-90"
-                    }`}
-                    onClick={() => setOpen(open != key ? key : null)}
-                  >
-                    <i className="bi bi-caret-down"></i>
-                  </th>
-                  <td className="px-6 py-4">{val.adress.nama}</td>
-                  <td className="px-6 py-4">{totalQty}</td>
-                  <td className="px-6 py-4">
-                    <FormatRupiah value={val.orders_total} />
-                  </td>
-                </tr>
-                {open == key && (
-                  <>
-                    <tr className="text-xs text-gray-700 uppercase bg-gray-50">
-                      <th scope="col" className="px-6 py-3">
-                        {""}
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Barang
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Jumlah
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Total
-                      </th>
-                    </tr>
-                    {val.order.map((item) => {
-                      return (
-                        <tr className="bg-white border-b ">
-                          <td className="px-6 py-4">{""}</td>
-                          <td className="px-6 py-4">{item.produk.name}</td>
-                          <td className="px-6 py-4">{item.qty}</td>
-                          <td className="px-6 py-4">
-                            <FormatRupiah
-                              value={item.qty * item.produk.price}
-                            />
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </>
-                )}
-              </>
-            );
-          })}
+              return (
+                <>
+                  {" "}
+                  <tr className="bg-white border-b ">
+                    <th
+                      className={`px-6 py-4 font-medium   bg-gray-50 w-10 hover:cursor-pointer  ${
+                        open != key && "-rotate-90"
+                      }`}
+                      onClick={() => setOpen(open != key ? key : null)}
+                    >
+                      <i className="bi bi-caret-down"></i>
+                    </th>
+                    <td className="px-6 py-4">{val.adress.nama}</td>
+                    <td className="px-6 py-4">{totalQty}</td>
+                    <td className="px-6 py-4">
+                      <FormatRupiah value={val.orders_total} />
+                    </td>
+                  </tr>
+                  {open == key && (
+                    <>
+                      <tr className="text-xs text-gray-700 uppercase bg-gray-50">
+                        <th scope="col" className="px-6 py-3">
+                          {""}
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Barang
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Jumlah
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Total
+                        </th>
+                      </tr>
+                      {val.order.map((item) => {
+                        return (
+                          <tr className="bg-white border-b ">
+                            <td className="px-6 py-4">{""}</td>
+                            <td className="px-6 py-4">{item.produk.name}</td>
+                            <td className="px-6 py-4">{item.qty}</td>
+                            <td className="px-6 py-4">
+                              <FormatRupiah
+                                value={item.qty * item.produk.price}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </>
+                  )}
+                </>
+              );
+            })
+          ) : (
+            <tr className="text-center ">
+              <td colSpan={4} className="py-5">
+                Tidak History Pesanan
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

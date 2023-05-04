@@ -3,20 +3,27 @@ import { useSelector, useDispatch } from "react-redux";
 import { getDataCategory, setCategory } from "../redux/categorySlice";
 import { Link, useNavigate } from "react-router-dom";
 import { getUser, logout } from "../redux/authSlice";
-
+import { getAllCart } from "../redux/KeranjangSlice";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth);
+  const idUser = user.data?.result?._id;
   const Category = useSelector((state) => state.Category);
   const dataCategory = Category?.data.result;
   const token = localStorage.getItem("token");
   const username = user.data?.result?.username;
   const role = user.data?.result?.role;
+  const keranjang = useSelector((state) => state.Keranjang);
+  const totalKeranjang = keranjang.data.result?.length;
+  console.log({ keranjang });
   useEffect(() => {
     dispatch(getUser({ isLogin: true }));
     dispatch(getDataCategory());
   }, [dispatch]);
+  useEffect(() => {
+    dispatch(getAllCart(idUser));
+  }, [idUser, dispatch]);
 
   const handleCategory = (val) => {
     dispatch(setCategory(val));
@@ -72,7 +79,7 @@ const Navbar = () => {
           <Link to="/keranjang">
             <div className="relative  w-16 py-3 ">
               <div className="w-1 absolute h-1 right-8 top-1 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold p-2">
-                <small>1</small>
+                <small>{totalKeranjang && totalKeranjang}</small>
               </div>
               <i class="bi bi-cart  text-2xl font-bold "></i>
             </div>

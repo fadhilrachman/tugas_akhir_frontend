@@ -45,7 +45,7 @@ const Profile = () => {
     <div className="font-index">
       <Navbar />
       <div className="grid grid-flow-col grid-cols-4 gap-10 mx-3">
-        <div className="border p-4 rounded">cok</div>
+        <div className=" p-4 rounded"></div>
         <div className=" col-span-3 ">
           <div className="my-4 text-emerald-600">
             <i class="bi bi-person-fill mr-2 "></i>

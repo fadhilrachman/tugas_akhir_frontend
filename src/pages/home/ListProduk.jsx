@@ -7,7 +7,7 @@ import Navbar from "../../components/Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import { createCart } from "../../redux/KeranjangSlice";
 import { FormatRupiah } from "@arismun/format-rupiah";
-
+import { getAllCart } from "../../redux/KeranjangSlice";
 const ListProduk = () => {
   const dispatch = useDispatch();
   const Tags = useSelector((state) => state.Tag);
@@ -47,6 +47,8 @@ const ListProduk = () => {
   const handleChart = async (produk) => {
     const cart = { produk: produk._id, user: idUser };
     await dispatch(createCart(cart));
+    await dispatch(getAllCart(idUser));
+
     toast.success("Success Message");
   };
 
