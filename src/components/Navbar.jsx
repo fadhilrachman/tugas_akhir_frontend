@@ -34,7 +34,7 @@ const Navbar = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
-
+  console.log({ token: localStorage.getItem("token") });
   return (
     <div className="text-sm font-medium font-index text-black">
       <div className=" p-6 px-24 flex justify-between items-center">
@@ -76,14 +76,16 @@ const Navbar = () => {
         </div>
         <div className="flex items-center justify-between">
           {" "}
-          <Link to="/keranjang">
-            <div className="relative  w-16 py-3 ">
-              <div className="w-1 absolute h-1 right-8 top-1 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold p-2">
-                <small>{totalKeranjang && totalKeranjang}</small>
+          {username && (
+            <Link to="/keranjang">
+              <div className="relative  w-16 py-3 ">
+                <div className="w-1 absolute h-1 right-8 top-1 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold p-2">
+                  <small>{totalKeranjang && totalKeranjang}</small>
+                </div>
+                <i class="bi bi-cart  text-2xl font-bold "></i>
               </div>
-              <i class="bi bi-cart  text-2xl font-bold "></i>
-            </div>
-          </Link>
+            </Link>
+          )}
           {/* <i class="bi bi-person-fill mr-2"></i>login */}
           <div className="">
             {user.isLoading ? (
