@@ -23,21 +23,17 @@ const Login = ({ setShowNav }) => {
     }),
     onSubmit: async (val) => {
       await dispatch(login(val));
+      if (auth.status == "error") {
+        toast.error("pastikan password dan email benar");
+      }
+      if (auth.status == "success" && auth.result?.token) {
+        localStorage.setItem("token", auth.result?.token);
 
+        navigate("/");
+      }
       setShowNav(true);
     },
   });
-
-  useEffect(() => {
-    if (auth.status == "error") {
-      toast.error("pastikan password dan email benar");
-    }
-    if (auth.status == "success" && auth.result?.token) {
-      localStorage.setItem("token", auth.result?.token);
-
-      navigate("/");
-    }
-  }, [auth.status]);
 
   console.log({ auth });
   return (

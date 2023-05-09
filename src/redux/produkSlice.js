@@ -3,12 +3,12 @@ import axios from "axios";
 
 export const getDataProduks = createAsyncThunk(
   "/get-produk",
-  async ({ tag, category }) => {
+  async ({ tag, category, search = "" }) => {
     const tagFiter = tag.map((val) => `tag=${val}&`);
     const result = await axios.get(
       `${
         process.env.REACT_APP_API
-      }/products?category=${category}&${tagFiter.join("")}`,
+      }/products?search=${search}&category=${category}&${tagFiter.join("")}`,
       {}
     );
     return result;
@@ -32,6 +32,12 @@ const Produks = createSlice({
     data: [],
     status: "",
     category: "",
+    search: "",
+  },
+  reducers: {
+    setSearch: (state, action) => {
+      state.search = action.payload;
+    },
   },
   extraReducers: {
     [getDataProduks.pending]: (state) => {
@@ -55,4 +61,6 @@ const Produks = createSlice({
     },
   },
 });
+export const { setSearch } = Produks.actions;
+
 export default Produks.reducer;

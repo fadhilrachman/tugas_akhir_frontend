@@ -4,19 +4,19 @@ import { getDataCategory, setCategory } from "../redux/categorySlice";
 import { Link, useNavigate } from "react-router-dom";
 import { getUser, logout } from "../redux/authSlice";
 import { getAllCart } from "../redux/KeranjangSlice";
+import { setSearch } from "../redux/produkSlice";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth);
   const idUser = user.data?.result?._id;
   const Category = useSelector((state) => state.Category);
+  const [search, setsearch] = useState("");
   const dataCategory = Category?.data.result;
-  const token = localStorage.getItem("token");
   const username = user.data?.result?.username;
-  const role = user.data?.result?.role;
   const keranjang = useSelector((state) => state.Keranjang);
   const totalKeranjang = keranjang.data.result?.length;
-  console.log({ keranjang });
+
   useEffect(() => {
     dispatch(getUser({ isLogin: true }));
     dispatch(getDataCategory());
@@ -34,7 +34,11 @@ const Navbar = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
-  console.log({ token: localStorage.getItem("token") });
+  const handleSearch = (e) => {
+    e.preventDefault();
+    dispatch(setSearch(search));
+    console.log("hai");
+  };
   return (
     <div className="text-sm font-medium font-index text-black">
       <div className=" p-6 px-24 flex justify-between items-center">
@@ -50,13 +54,13 @@ const Navbar = () => {
           </h1>
         </div>
         <div>
-          <div className=" grid grid-cols-3 gap-0  ">
-            <div className=" row-span-3 relative">
+          <div className=" flex   ">
+            <div className="  relative">
               <select
                 name=""
                 id=""
                 onChange={(e) => handleCategory(e.target.value)}
-                className="border-y w-56 bg-white border-l px-5  pr-3 py-3 font-bold text-sm flex justify-around items-center  focus:outline-none  hover:cursor-pointer hover:bg-neutral-100"
+                className="border-y w-56 bg-white border-l px-5   py-3 font-bold text-sm flex justify-around items-center  focus:outline-none  hover:cursor-pointer hover:bg-neutral-100"
               >
                 <option value="">All Category</option>
                 {dataCategory?.map((val) => (
@@ -64,14 +68,21 @@ const Navbar = () => {
                 ))}
               </select>
             </div>
-            <input
-              type="text"
-              className="focus:outline-none text-gray-400 px-3 py-3 border-y  "
-              placeholder="Search Produk..."
-            />
-            <button className="text-white bg-emerald-600 font-extrabold text-1xl py-3 px-6  ">
-              Search
-            </button>
+            <form action="" onSubmit={handleSearch} className="flex">
+              <input
+                type="text"
+                className="focus:outline-none text-gray-400 px-3 py-3 border-y  "
+                placeholder="Search Produk..."
+                onChange={(e) => setsearch(e.target.value)}
+                value={search}
+              />
+              <button
+                className="text-white  bg-emerald-600 font-extrabold text-1xl py-3 px-10  "
+                type="submit"
+              >
+                Search
+              </button>
+            </form>
           </div>
         </div>
         <div className="flex items-center justify-between">
@@ -101,14 +112,14 @@ const Navbar = () => {
                       <small>Profile</small>
                     </div>
                   </Link>
-                  {role == "admin" && (
+                  {/* {role == "admin" && (
                     <Link to="/admin">
                       <div className=" w-32 flex border-t justify-between border-x py-2 px-4  hover:bg-slate-100">
                         <i class="bi bi-speedometer2"></i>
                         <small>Dashboard</small>
                       </div>
                     </Link>
-                  )}
+                  )} */}
 
                   <div
                     className=" w-32 flex border-t justify-between border-x py-2 px-4 rounded-b hover:bg-slate-100"

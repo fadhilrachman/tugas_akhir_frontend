@@ -20,7 +20,8 @@ const Keranjang = () => {
   const navigate = useNavigate();
   const alamat = useSelector((state) => state.Alamat);
   const [alamatk, setAlamatk] = useState(0);
-  const dataAlamat = alamat.status == "success" && alamat.data?.result[alamatk];
+  const dataAlamat =
+    alamat.status === "success" && alamat.data?.result[alamatk];
   const user = useSelector((state) => state.Auth);
   const idUser = user.data?.result?._id;
   const keranjang = useSelector((state) => state.Keranjang);
@@ -52,6 +53,8 @@ const Keranjang = () => {
   }, [dispatch, show.createAlamat]);
 
   const handleChart = (val) => {
+    console.log({ val });
+
     const isKeyExist = formik.values.groceries.some(
       (item) => item.key === val.key
     );
@@ -59,10 +62,9 @@ const Keranjang = () => {
       (item) => item.key !== val.key
     );
     if (!isKeyExist) {
-      console.log(val);
       return formik.setFieldValue("groceries", [
         ...formik.values.groceries,
-        val,
+        { ...val, qty: 1 },
       ]);
     }
     formik.setFieldValue("groceries", deleteItem);
@@ -72,14 +74,14 @@ const Keranjang = () => {
     // const isKeyExist = formik.values.groceries.some((item) => item.key === key);
 
     let inCrementQty = [...formik.values.groceries];
-    inCrementQty.map((val) => (val.key == key ? (val.qty = val.qty + 1) : ""));
+    inCrementQty.map((val) => (val.key === key ? (val.qty = val.qty + 1) : ""));
 
     formik.setFieldValue("groceries", inCrementQty);
   };
   const handleDecrementQty = (key) => {
     let inDecrementQty = [...formik.values.groceries];
     inDecrementQty.map((val) =>
-      val.key == key && val.qty > 0 ? (val.qty = val.qty - 1) : ""
+      val.key === key && val.qty > 0 ? (val.qty = val.qty - 1) : ""
     );
 
     formik.setFieldValue("groceries", inDecrementQty);
@@ -98,21 +100,20 @@ const Keranjang = () => {
       adress: dataAlamat._id,
     };
     dispatch(createInvoice(checkout));
-    console.log({ id });
     dispatch(deleteCart({ id }));
     toast.success("Pembayaran Berhasil");
     setTimeout(() => {
       navigate("/");
     }, 2000);
   };
-  console.log({ dataAlamat });
+  console.log({ data: formik.values.groceries });
   return (
     <div className="text-gray-900 font-light">
       <Navbar />
       <div className="px-36 py-12 grid grid-cols-3 gap-6 ">
         <div className="col-span-2">
           <h1 className="text-3xl font-medium  ">
-            {page == "keranjang" ? (
+            {page === "keranjang" ? (
               "keranjang"
             ) : (
               <p onClick={() => setPage("keranjang")}>
@@ -121,62 +122,77 @@ const Keranjang = () => {
             )}
           </h1>
           <div className="w-full mt-4 rounded bg-neutral-100 h-2"></div>
-          {page == "keranjang" ? (
-            keranjang.status == "loading" ? (
+          {page === "keranjang" ? (
+            keranjang.status === "loading" ? (
               <div className="h-10 w-10 col-start-2  mx-auto my-5 rounded-full border-emerald-600 border-2 border-b-white animate-spin"></div>
             ) : dataKernjang?.length != 0 ? (
-              dataKernjang?.map((val, key) => (
-                <>
-                  <div className="flex mt-5 items-start ">
-                    <input
-                      type="checkbox"
-                      className="mr-4"
-                      onChange={() => handleChart({ ...val, key })}
-                      name="groceries"
-                      checked={formik.values.groceries.some(
-                        (item) => item.key === key
-                      )}
-                      id=""
-                    />
-                    <div className="w-full">
-                      <p className="font-semibold">{val.produk.name}</p>
-                      <small className="text-neutral-500">
-                        {val.produk.category?.name}
-                      </small>
-                      <div className="flex">
-                        <img
-                          src="https://images.tokopedia.net/img/cache/100-square/VqbcmM/2023/2/24/16083d95-3271-4b29-86ff-be3bf84a6c4c.jpg.webp?ect=4g"
-                          alt=""
-                          className="mt-3 w-20 h-20 mr-4"
-                        />
-                        <div>
-                          <p>{val.produk.description || "-"}</p>
-                          <p className="mt-3 text-emerald-600 text-2xl">
-                            Rp.{val.produk.price}
-                          </p>
+              dataKernjang?.map((val, key) => {
+                return (
+                  <>
+                    <div className="flex mt-5 items-start ">
+                      <input
+                        type="checkbox"
+                        className="mr-4"
+                        onChange={() => handleChart({ ...val, key })}
+                        name="groceries"
+                        checked={formik.values.groceries.some(
+                          (item) => item.key === key
+                        )}
+                        id=""
+                      />
+                      <div className="w-full">
+                        <p className="font-semibold">{val.produk.name}</p>
+                        <small className="text-neutral-500">
+                          {val.produk.category?.name}
+                        </small>
+                        <div className="flex">
+                          <img
+                            src="https://images.tokopedia.net/img/cache/100-square/VqbcmM/2023/2/24/16083d95-3271-4b29-86ff-be3bf84a6c4c.jpg.webp?ect=4g"
+                            alt=""
+                            className="mt-3 w-20 h-20 mr-4"
+                          />
+                          <div>
+                            <p>{val.produk.description || "-"}</p>
+                            <p className="mt-3 text-emerald-600 text-2xl">
+                              Rp.{val.produk.price}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-2xl flex   w-28 mt-3  mx-auto justify-between">
+                          <i
+                            className="bi bi-dash-circle cursor-pointer"
+                            onClick={() => handleDecrementQty(key)}
+                          ></i>
+                          {formik.values.groceries.length !== 0
+                            ? formik.values.groceries.map((item) => {
+                                console.log(
+                                  key,
+                                  formik.values.groceries.some(
+                                    (item) => item.key === key
+                                  )
+                                );
+                                if (key === item.key) {
+                                  return <span>{item.qty}</span>;
+                                } else if (
+                                  !formik.values.groceries.some(
+                                    (item) => item.key === key
+                                  )
+                                ) {
+                                  return <span>1</span>;
+                                }
+                              })
+                            : "1"}
+                          <i
+                            className="bi bi-plus-circle cursor-pointer"
+                            onClick={() => handleIncrementQty(key)}
+                          ></i>
                         </div>
                       </div>
-                      <div className="text-2xl flex   w-28 mt-3  mx-auto justify-between">
-                        <i
-                          className="bi bi-dash-circle cursor-pointer"
-                          onClick={() => handleDecrementQty(key)}
-                        ></i>
-                        <span className="">
-                          {/* {formik.values.groceries.filter(
-                        (item) => item.key == val.key
-                      )[0].qty || val.qty} */}
-                          1
-                        </span>
-                        <i
-                          className="bi bi-plus-circle cursor-pointer"
-                          onClick={() => handleIncrementQty(key)}
-                        ></i>
-                      </div>
                     </div>
-                  </div>
-                  <div className="w-full mt-4 rounded bg-neutral-100 h-2"></div>
-                </>
-              ))
+                    <div className="w-full mt-4 rounded bg-neutral-100 h-2"></div>
+                  </>
+                );
+              })
             ) : (
               <div className="w-80 mx-auto  mt-5">
                 <span className="text-neutral-300 text-2xl font-lg">
@@ -289,12 +305,12 @@ const Keranjang = () => {
           </div>
           <BaseButton
             class="mt-5"
-            disabled={formik.values.groceries.length == 0}
+            disabled={formik.values.groceries.length === 0}
             onClick={() =>
-              page == "keranjang" ? setPage("checkout") : handleCheckout()
+              page === "keranjang" ? setPage("checkout") : handleCheckout()
             }
           >
-            {page == "keranjang" ? "Checkout" : "Bayar"}
+            {page === "keranjang" ? "Checkout" : "Bayar"}
           </BaseButton>
         </div>
       </div>

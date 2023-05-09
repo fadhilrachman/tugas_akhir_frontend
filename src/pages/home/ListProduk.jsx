@@ -29,8 +29,8 @@ const ListProduk = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setParam({ ...param, category: Category.category });
-  }, [Category.category]);
+    setParam({ ...param, category: Category.category, search: Produk.search });
+  }, [Category.category, Produk.search]);
 
   useEffect(() => {
     dispatch(getDataProduks(param));
@@ -51,7 +51,7 @@ const ListProduk = () => {
 
     toast.success("Success Message");
   };
-
+  console.log({ Produk });
   return (
     <div className="font-index text-gray-900">
       <Navbar />
@@ -89,7 +89,8 @@ const ListProduk = () => {
                 <div className="mt-4 shadow-md rounded relative">
                   <img
                     // src="https://images.pexels.com/photos/51312/kiwi-fruit-vitamins-healthy-eating-51312.jeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMN2HtLKerGA71nhLcStkDIk4u52H5CtwNcrFhLy0oMg&s"
+                    // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMN2HtLKerGA71nhLcStkDIk4u52H5CtwNcrFhLy0oMg&s"
+                    src={`${process.env.REACT_APP_API}/${val.image_url}`}
                     alt=""
                     className="w-full h-44 rounded-t"
                     srcset=""
