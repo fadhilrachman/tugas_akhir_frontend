@@ -253,7 +253,7 @@ const Keranjang = () => {
                     <div className=" flex justify-between pr-5 items-center">
                       <div className="flex">
                         <img
-                          src="https://images.tokopedia.net/img/cache/100-square/VqbcmM/2023/2/24/16083d95-3271-4b29-86ff-be3bf84a6c4c.jpg.webp?ect=4g"
+                          src={`${process.env.REACT_APP_API}/${val.produk.image_url}`}
                           alt=""
                           className="mt-2 w-14 h-1w-14 mr-4"
                         />

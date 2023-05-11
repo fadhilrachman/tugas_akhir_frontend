@@ -12,7 +12,7 @@ const Profile = () => {
   const [path, setPath] = useState("Biodata Diri");
   useEffect(() => {
     dispatch(getUser({ isLogin: true }));
-  }, [path]);
+  }, [dispatch]);
   const tab = [
     {
       name: "Biodata Diri",

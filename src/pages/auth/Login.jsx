@@ -21,8 +21,8 @@ const Login = ({ setShowNav }) => {
       email: Yup.string().required("email tidak boleh kosong"),
       password: Yup.string().required("password tidak boleh kosong"),
     }),
-    onSubmit: (val) => {
-      dispatch(login(val));
+    onSubmit: async (val) => {
+      await dispatch(login(val));
       // if (auth.result?.token) {
       //   await localStorage.setItem("token", auth.result?.token);
       // }

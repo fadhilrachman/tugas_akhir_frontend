@@ -11,7 +11,6 @@ const Pesanan = () => {
   const idUser = user.result?.result?._id;
   const invoice = useSelector((state) => state.Invoice);
   const dataIvoice = invoice?.data?.result;
-  console.log({ dataIvoice });
   useEffect(() => {
     dispatch(getInvoice(idUser));
   }, []);

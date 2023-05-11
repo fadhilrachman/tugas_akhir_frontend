@@ -74,7 +74,6 @@ const Alamat = () => {
       ) : (
         <div className="flex justify-center items-center flex-col">
           <img
-            // src="https://cdn-icons-png.flaticon.com/512/2877/2877699.png"
             src="https://cdn-icons-png.flaticon.com/512/4076/4076503.png"
             alt=""
             className=" w-52"
