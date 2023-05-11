@@ -21,21 +21,18 @@ const Login = ({ setShowNav }) => {
       email: Yup.string().required("email tidak boleh kosong"),
       password: Yup.string().required("password tidak boleh kosong"),
     }),
-    onSubmit: async (val) => {
-      await dispatch(login(val));
-      if (auth.status == "error") {
-        toast.error("pastikan password dan email benar");
+    onSubmit: (val) => {
+      dispatch(login(val));
+      // if (auth.result?.token) {
+      //   await localStorage.setItem("token", auth.result?.token);
+      // }
+      if (auth.status === "error") {
+        return toast.error("pastikan password dan email benar");
       }
-      if (auth.status == "success" && auth.result?.token) {
-        localStorage.setItem("token", auth.result?.token);
-
-        navigate("/");
-      }
-      setShowNav(true);
+      navigate("/");
     },
   });
 
-  console.log({ auth });
   return (
     <div className="font-index flex justify-center items-center h-screen flex-col">
       <span className="text-3xl text-green-600 font-bold">Login</span>
@@ -53,6 +50,7 @@ const Login = ({ setShowNav }) => {
           <BaseInput
             placeholder="password"
             name="password"
+            type="password"
             class="mt-3"
             onChange={formik.handleChange}
             value={formik.values.password}

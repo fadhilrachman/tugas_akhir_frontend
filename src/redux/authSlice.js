@@ -7,6 +7,8 @@ export const register = createAsyncThunk("/auth-login", async (val) => {
 });
 export const login = createAsyncThunk("/auth-login", async (val) => {
   const result = await axios.post(`${process.env.REACT_APP_API}/login`, val);
+  await localStorage.setItem("token", result.data.token);
+
   return result;
 });
 export const getUser = createAsyncThunk("/get-user", async (param) => {
@@ -38,7 +40,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     status: "",
-    data: [],
+    result: [],
+    token: [],
   },
   extraReducers: {
     [register.pending]: (state) => {
@@ -55,14 +58,14 @@ const authSlice = createSlice({
     },
     [login.pending]: (state) => {
       state.status = "loading";
-      state.result = false;
+      state.token = false;
     },
     [login.fulfilled]: (state, action) => {
-      state.result = action.payload.data;
+      state.token = action.payload.data;
       state.status = "success";
     },
     [login.rejected]: (state, action) => {
-      state.result = false;
+      state.token = false;
       state.status = "error";
     },
     [logout.pending]: (state) => {
@@ -82,7 +85,7 @@ const authSlice = createSlice({
       state.status = "loading";
     },
     [getUser.fulfilled]: (state, action) => {
-      state.data = action.payload.data;
+      state.result = action.payload.data;
       state.status = "success";
     },
     [getUser.rejected]: (state) => {

@@ -13,7 +13,7 @@ const Alamat = () => {
   });
   const alamat = useSelector((state) => state.Alamat);
   const user = useSelector((state) => state.Auth);
-  const idUser = user.data?.result?._id;
+  const idUser = user.result?.result?._id;
   const dataAlamat = alamat.data?.result;
   useEffect(() => {
     dispatch(getAlamat({ user: idUser && idUser }));
@@ -21,9 +21,9 @@ const Alamat = () => {
 
   return (
     <div>
-      {alamat.status == "ladoing" ? (
+      {alamat.status === "ladoing" ? (
         <div className="h-10 w-10 col-start-2  rounded-full border-emerald-600 border-2 border-b-white animate-spin"></div>
-      ) : dataAlamat?.length != 0 ? (
+      ) : dataAlamat?.length !== 0 ? (
         <>
           <div className="flex justify-end">
             <BaseButton

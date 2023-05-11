@@ -19,7 +19,7 @@ import { getUser } from "../../redux/authSlice";
 const ModalCreateAlamat = ({ show, onHide, update }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth);
-  const idUser = user.data?.result?._id;
+  const idUser = user.result?.result?._id;
   const region = useSelector((state) => state.Region);
   const dataProvinsi = region.dataProvinsi?.provinsi;
   const dataKabupten = region.dataKabupaten?.kota_kabupaten;
@@ -69,8 +69,6 @@ const ModalCreateAlamat = ({ show, onHide, update }) => {
     formik.setFieldValue("user", idUser);
   }, [dispatch]);
 
- 
-
   useEffect(() => {
     dispatch(getDataKabupaten(param.id_provinsi));
     dispatch(getDataKecamatan(param.id_kabupaten));
@@ -83,7 +81,7 @@ const ModalCreateAlamat = ({ show, onHide, update }) => {
     console.log("ini id : ", nama);
     formik.setFieldValue("provinsi", nama);
     setParam({ ...param, id_provinsi: e.target.value });
-    if (e.target.value == "") {
+    if (e.target.value === "") {
       formik.setFieldValue("kabupaten", "");
       formik.setFieldValue("kecamatan", "");
       formik.setFieldValue("provinsi", "");
@@ -101,7 +99,7 @@ const ModalCreateAlamat = ({ show, onHide, update }) => {
     const nama = selectedOption.text;
     formik.setFieldValue("kabupaten", nama);
     setParam({ ...param, id_kabupaten: e.target.value });
-    if (e.target.value == "") {
+    if (e.target.value === "") {
       setParam({ ...param, id_kabupaten: "" });
       formik.setFieldValue("kabupaten", "");
       formik.setFieldValue("kecamatan", "");
@@ -116,7 +114,7 @@ const ModalCreateAlamat = ({ show, onHide, update }) => {
     const nama = selectedOption.text;
     formik.setFieldValue("kecamatan", nama);
     setParam({ ...param, id_kecamatan: e.target.value });
-    if (e.target.value == "") {
+    if (e.target.value === "") {
       setParam({ ...param, id_kecamatan: "" });
       formik.setFieldValue("kecamatan", "");
       formik.setFieldValue("kelurahan", "");

@@ -8,7 +8,7 @@ const Pesanan = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth);
   const [open, setOpen] = useState(null);
-  const idUser = user.data?.result?._id;
+  const idUser = user.result?.result?._id;
   const invoice = useSelector((state) => state.Invoice);
   const dataIvoice = invoice?.data?.result;
   console.log({ dataIvoice });
@@ -36,7 +36,7 @@ const Pesanan = () => {
           </tr>
         </thead>
         <tbody>
-          {dataIvoice?.length != 0 ? (
+          {dataIvoice?.length !== 0 ? (
             dataIvoice?.map((val, key) => {
               let totalQty = 0;
               console.log(val.order.map((val) => (totalQty += val.qty)));
@@ -47,9 +47,9 @@ const Pesanan = () => {
                   <tr className="bg-white border-b ">
                     <th
                       className={`px-6 py-4 font-medium   bg-gray-50 w-10 hover:cursor-pointer  ${
-                        open != key && "-rotate-90"
+                        open !== key && "-rotate-90"
                       }`}
-                      onClick={() => setOpen(open != key ? key : null)}
+                      onClick={() => setOpen(open !== key ? key : null)}
                     >
                       <i className="bi bi-caret-down"></i>
                     </th>
@@ -59,7 +59,7 @@ const Pesanan = () => {
                       <FormatRupiah value={val.orders_total} />
                     </td>
                   </tr>
-                  {open == key && (
+                  {open === key && (
                     <>
                       <tr className="text-xs text-gray-700 uppercase bg-gray-50">
                         <th scope="col" className="px-6 py-3">

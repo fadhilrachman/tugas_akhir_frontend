@@ -9,21 +9,23 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth);
-  const idUser = user.data?.result?._id;
+  const idUser = user.result?.result?._id;
   const Category = useSelector((state) => state.Category);
   const [search, setsearch] = useState("");
   const dataCategory = Category?.data.result;
-  const username = user.data?.result?.username;
+  const username = user.result?.result?.username;
   const keranjang = useSelector((state) => state.Keranjang);
   const totalKeranjang = keranjang.data.result?.length;
-
   useEffect(() => {
     dispatch(getUser({ isLogin: true }));
     dispatch(getDataCategory());
   }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getAllCart(idUser));
-  }, [idUser, dispatch]);
+    if (idUser) {
+      dispatch(getAllCart(idUser));
+    }
+  }, [idUser]);
 
   const handleCategory = (val) => {
     dispatch(setCategory(val));
@@ -37,8 +39,8 @@ const Navbar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     dispatch(setSearch(search));
-    console.log("hai");
   };
+  console.log({ user });
   return (
     <div className="text-sm font-medium font-index text-black">
       <div className=" p-6 px-24 flex justify-between items-center">
@@ -97,7 +99,6 @@ const Navbar = () => {
               </div>
             </Link>
           )}
-          {/* <i class="bi bi-person-fill mr-2"></i>login */}
           <div className="">
             {user.isLoading ? (
               <div className="h-10 w-10 col-start-2  mx-auto  rounded-full border-emerald-600 border-2 border-b-white animate-spin"></div>

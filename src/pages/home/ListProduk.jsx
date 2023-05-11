@@ -15,7 +15,7 @@ const ListProduk = () => {
   const Produk = useSelector((state) => state.Produk);
   const dataProduk = Produk?.data.result;
   const user = useSelector((state) => state.Auth);
-  const idUser = user.data?.result?._id;
+  const idUser = user.result?.result?._id;
   const dataTags = Tags?.data.result;
   const [param, setParam] = useState({
     category: Category.category,
@@ -49,7 +49,7 @@ const ListProduk = () => {
     await dispatch(createCart(cart));
     await dispatch(getAllCart(idUser));
 
-    toast.success("Success Message");
+    toast.success("Berhasil Menambahkan Ke Keranjang");
   };
   console.log({ Produk });
   return (
@@ -88,8 +88,6 @@ const ListProduk = () => {
               dataProduk?.map((val) => (
                 <div className="mt-4 shadow-md rounded relative">
                   <img
-                    // src="https://images.pexels.com/photos/51312/kiwi-fruit-vitamins-healthy-eating-51312.jeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                    // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMN2HtLKerGA71nhLcStkDIk4u52H5CtwNcrFhLy0oMg&s"
                     src={`${process.env.REACT_APP_API}/${val.image_url}`}
                     alt=""
                     className="w-full h-44 rounded-t"
@@ -138,43 +136,3 @@ const ListProduk = () => {
 };
 
 export default ListProduk;
-
-// {Produk.status == "loading" ? (
-//   <div className="h-10 w-10 col-start-2  rounded-full border-netext-neutral-300 border-2 border-b-white animate-spin"></div>
-// ) : dataProduk?.length != 0 ? (
-//   dataProduk?.map((val) => (
-//     <div className="relative group ">
-//       <div className="w-full h-56 rounded-t bg-slate-100  ">
-//         <span className="opacity-0">ddd</span>
-//         <img
-//           // src="https://img.freepik.com/premium-photo/longkong-fruit-lansium-parasiticum-is-tropical-fruit-white_38013-711.jpg?w=740"
-//           src={`${process.env.REACT_APP_API}/` + val.image_url}
-//           // src="https://img.freepik.com/free-photo/colorful-collage-fruits-texture-close-up_23-2149870264.jpg?size=626&ext=jpg&ga=GA1.2.1056913818.1672935173&semt=sph"
-//           alt=""
-//           srcset=""
-//           className="h-30  w-full"
-//         />
-//         <div className="border rounded-full  bg-white hover:text-white  h-12 w-12 mx-auto flex mt-20 items-center group-hover:relative justify-center group-hover:mt-0 group-hover:mb-20  transition-all duration-500 ease-in-out    hover:transform  hover:cursor-pointer hover:rotate-[360deg] hover:bg-emerald-600 ">
-//           <i class="bi bi-cart-fill "></i>
-//         </div>
-//       </div>
-//       <div className="flex h-22   justify-center py-4 flex-col items-center  absolute w-full  bg-white">
-//         <span className="mb-2">{val.name}</span>
-//         <span className="font-bold text-emerald-600">
-//           <FormatRupiah value={val.price} />
-//           {/* {rupiahFormat.convert(val.price)} */}
-//         </span>
-//       </div>
-//     </div>
-//   ))
-// ) : (
-//   <div className="col-start-2  w-72 ">
-//     <img
-//       // src="https://cdn-icons-png.flaticon.com/512/2877/2877699.png"
-//       src="https://cdn-icons-png.flaticon.com/512/4076/4076503.png"
-//       alt=""
-//       className=" w-52"
-//     />
-//     <span className="text-3xl  font-bold">produk tidak ada</span>
-//   </div>
-// )}

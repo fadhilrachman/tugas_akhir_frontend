@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 const Biodata = () => {
   const user = useSelector((state) => state.Auth);
-  const { username, email } = user.data?.result;
+  const { username, email } = user.result?.result;
 
   return (
     <div className="flex">

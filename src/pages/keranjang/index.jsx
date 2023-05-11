@@ -23,7 +23,7 @@ const Keranjang = () => {
   const dataAlamat =
     alamat.status === "success" && alamat.data?.result[alamatk];
   const user = useSelector((state) => state.Auth);
-  const idUser = user.data?.result?._id;
+  const idUser = user.result?.result?._id;
   const keranjang = useSelector((state) => state.Keranjang);
   const dataKernjang = keranjang.data?.result;
   const [page, setPage] = useState("keranjang");
@@ -38,7 +38,7 @@ const Keranjang = () => {
       groceries: [],
     },
   });
-  formik.values.groceries.length != 0 &&
+  formik.values.groceries.length !== 0 &&
     formik.values.groceries.map(
       (val) => (total += val.qty * parseInt(val.produk.price))
     );
@@ -125,7 +125,7 @@ const Keranjang = () => {
           {page === "keranjang" ? (
             keranjang.status === "loading" ? (
               <div className="h-10 w-10 col-start-2  mx-auto my-5 rounded-full border-emerald-600 border-2 border-b-white animate-spin"></div>
-            ) : dataKernjang?.length != 0 ? (
+            ) : dataKernjang?.length !== 0 ? (
               dataKernjang?.map((val, key) => {
                 return (
                   <>
@@ -147,8 +147,7 @@ const Keranjang = () => {
                         </small>
                         <div className="flex">
                           <img
-                            src="https://images.tokopedia.net/img/cache/100-square/VqbcmM/2023/2/24/16083d95-3271-4b29-86ff-be3bf84a6c4c.jpg.webp?ect=4g"
-                            alt=""
+                            src={`${process.env.REACT_APP_API}/${val.produk.image_url}`}
                             className="mt-3 w-20 h-20 mr-4"
                           />
                           <div>
@@ -211,7 +210,7 @@ const Keranjang = () => {
                 <p className="font-medium text-base border-b pb-3">
                   Alamat Pengiriman
                 </p>
-                {alamat?.data?.result.length != 0 ? (
+                {alamat?.data?.result.length !== 0 ? (
                   <div className="mt-3 text-sm flex justify-between items-center px-3 ">
                     <div>
                       <p className="font-medium text-emerald-600 mb-2">
